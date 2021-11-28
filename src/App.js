@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+import DragDropExample from "./component/DragDropExample"
+import Dashboard from "./pages/Dashboard"
+import DocumentPage from "./pages/DocumentPage"
+import Home from "./pages/Home"
+import Login from "./pages/Login"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+	return (
+		<div className='font-poppins'>
+			<Router>
+				<Routes>
+					<Route path='/' element={<Home />} />
+					<Route path='/sign-in' element={<Login />} />
+					<Route path='/admin/*' element={<Dashboard />} />
+					<Route path='/document-example' element={<DocumentPage />} />
+					<Route path='/dragdrop-example' element={<DragDropExample />} />
+					<Route path='*' element={<Navigate replace to='/' />} />
+					{/* <DocumentPage /> */}
+					{/* <Home /> */}
+					{/* <DragDropExample /> */}
+				</Routes>
+			</Router>
+		</div>
+	)
 }
 
-export default App;
+export default App

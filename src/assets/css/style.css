@@ -1,0 +1,74 @@
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px gray; 
+    border-radius: 50px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #0891b2; 
+    border-radius: 20px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #152e4d;
+    cursor: pointer;
+}
+
+.modal{
+    position: fixed; 
+    width: 100%;
+    height: 100%; 
+    top: 0; 
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+.modal-outside{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(17, 24, 39, 1);
+    opacity: 0.6
+}
+
+/* PULSE BUBBLES */
+.pulse-container {
+    width: 140px;
+    display: flex;
+    justify-content: space-between;
+}
+.pulse-bubble {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: #3ff9dc;
+}
+.pulse_bubble-1 {
+    animation: pulse .4s ease .1s infinite alternate;
+}
+.pulse_bubble-2 {
+    animation: pulse .4s ease .2s infinite alternate;
+}
+.pulse_bubble-3 {
+    animation: pulse .4s ease .4s infinite alternate;
+} 
+@keyframes pulse {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: .25;
+        transform: scale(.75);
+    }
+}
