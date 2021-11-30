@@ -8,13 +8,23 @@ import UserRole from "./container/UserRole"
 
 export const RouteAdminRole = [
     {
-        title: 'Menu',
+        title: 'Dashboard',
+        path: '',
+        exact: true,
+        component: <MainDashboard />
+    },
+    {
+        title: 'Profile',
+        path: 'profile',
+        component: <Document />
+    },
+    {
+        title: 'Home',
         routes: [
             {
-                path : "",
+                path : "home-main",
                 layout: '/admin',
-                exact: true,
-                name: 'Dashboard',
+                name: 'Home',
                 icon_path: <FaTachometerAlt className='mr-4'/>,
                 component: <MainDashboard />
             }
@@ -24,21 +34,21 @@ export const RouteAdminRole = [
         title: 'Admin',
         routes: [
             {
-                path : "/document",
+                path : "admin-document",
                 layout: '/admin',
                 name: 'Document',
                 icon_path: <IoDocument className='mr-4'/>,
                 component: <Document />
             },
             {
-                path : "/user",
+                path : "admin-user",
                 layout: '/admin',
                 name: 'User',
                 icon_path: <FaUserAlt className='mr-4'/>,
                 component: <User />
             },
             {
-                path : "/role",
+                path : "admin-role",
                 layout: '/admin',
                 name: 'User Role',
                 icon_path: <FaUsers className='mr-4'/>,
@@ -50,7 +60,7 @@ export const RouteAdminRole = [
         title: 'Other',
         routes: [
             {
-                path : "/profile",
+                path : "other-profile",
                 layout: '/admin',
                 name: 'Profile',
                 icon_path: <FaAddressCard className='mr-4'/>,
