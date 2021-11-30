@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "../component/Header";
 import Sidebar from "../component/Sidebar";
 import NotFoundContainer from "../container/NotFoundContainer";
@@ -10,10 +10,14 @@ function Dashboard() {
 
     // MAIN ROUTE
 	const getRoutes = () => {
-		return RouteAdminRole.map(data => {
-			return data.routes.map(({layout, path, component, exact}, key) => {
-				return <Route path={path} element={component} index={exact} key={key} />
-			})
+		return RouteAdminRole.map((data, key) => {
+            if(data.routes && data.routes.length> 0){
+                return data.routes.map(({layout, path, component}, key) => {
+                    return <Route path={path} element={component} key={key} />
+                })
+            }else{
+                return <Route path={data.path} element={data.component} key={key} />
+            }
 		})
 	}
 
@@ -24,7 +28,7 @@ function Dashboard() {
 			<div className='bg-soft w-full overflow-auto h-screen flex flex-col'>
 				
 				{/* HEADER */}
-				<div className='hidden md:block h-12 bg-white py-8 px-4 sm:px-6 lg:px-8 shadow rounded-b-2xl sticky top-0 z-10'>
+				<div className='hidden md:block h-12 bg-white py-8 px-4 sm:px-6 lg:px-8 shadow sticky top-0 z-10'>
 					<Header />
 				</div>
 				
@@ -33,12 +37,13 @@ function Dashboard() {
                         {getRoutes()}
 
                         <Route path='*' element={<NotFoundContainer />} /> 
-                        {/* <Redirect from="*" to="/admin/page-not-found" /> */}
+                        <Route path='/' element={<Navigate replace to='/dashboard' />} />
+
                     </Routes>
 
 				
 				{/* FOOTER */}
-				<div className='flex items-center justify-between font-medium bg-white p-5 sm:px-6 lg:px-8 border-t-2 border-l-2 border-r-2 border-gray-200 rounded-t-2xl text-xss md:text-xs mt-auto'>
+				<div className='flex items-center justify-between font-medium bg-white p-5 sm:px-6 lg:px-8 border-t-2 border-l-2 border-r-2 border-gray-200 text-xss md:text-xs mt-auto'>
 					<p>Design & Develop by Ories</p>
 					<p>{new Date().getFullYear()} © CompanyName v1.0</p>
 				</div>
