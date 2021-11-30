@@ -12,7 +12,7 @@ const Login = () => {
     } = useForm({ criteriaMode: "all" });
 
     const onValidForm = (payload) => {
-        navigate('/admin', {replace: true})
+        navigate('/dashboard', {replace: true})
     }
 
     return (
@@ -31,6 +31,7 @@ const Login = () => {
                                 <div className="relative">
                                     <input autoComplete="off" id="email" name="email" type="text" className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Email address" 
                                         {...register("email", {
+                                            required: "Email is required.",
                                             pattern: {
                                                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                                                 message: "Invalid email address."
