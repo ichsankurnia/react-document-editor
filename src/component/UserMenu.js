@@ -3,7 +3,7 @@ import { FaSignOutAlt, FaUserCog } from 'react-icons/fa';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Link, useNavigate } from 'react-router-dom';
 
-const BG_AVATAR = ['152e4d', '0891b2', '2E8B57', '8B4513', '4B0082', '999']
+const BG_AVATAR = ['152e4d', '0891b2', '2E8B57', '8B4513', '4B0082', '999', '000']
 
 function UserMenu() {
     const [modalOut, showModalOut] = useState(false)
@@ -69,18 +69,18 @@ function UserMenu() {
                     </div>
                     <ul>
                         <li>
-                            <Link className="font-medium text-sm text-lightcayn hover:text-darkcayn flex items-center py-1 px-3" 
+                            <Link className="font-medium text-sm text-black hover:text-lightcayn flex items-center py-1 px-3" 
                                 to='/admin/profile' onClick={() => setDropdownOpen(!dropdownOpen)}
                             >
                                 <FaUserCog />&ensp;Settings
                             </Link>
                         </li>
                         <li>
-                            <span className="font-medium text-sm text-red-400 hover:text-darkcayn flex items-center py-1 px-3 cursor-pointer"
+                            <span className="font-medium text-sm text-red-400 hover:text-lightcayn flex items-center py-1 px-3 cursor-pointer"
                                 // onClick={() => showModalOut(true)}
                                 onClick={handleLogout}
                             >
-                                <FaSignOutAlt />&ensp; Sign Out
+                                <FaSignOutAlt />&ensp;Sign Out
                             </span>
                         </li>
                     </ul>
