@@ -26,13 +26,13 @@ const Home = () => {
     return (
         <div>
             {/* HEADER */}
-            <div className='bg-darkblue'>
-                <div className='w-11/12 mx-auto py-5 text-white flex justify-between items-center'>
-                    <div onClick={()=>window.location.reload()} className='cursor-pointer'>App Logo</div>
+            <div className='bg-darkblue w-full fixed top-0 z-10'>
+                <div className='w-11/12 mx-auto py-3 text-white flex justify-between items-center'>
+                    <div onClick={()=>window.location.reload()} className=' hover:text-lightcayn cursor-pointer'>App Logo</div>
                     <div className='flex items-center'>
-                        <p>Home</p>
-                        <p className='ml-5'>Document</p>
-                        <p className='ml-5'>FAQ</p>
+                        <p className=' hover:text-lightcayn border-b-2 border-transparent hover:border-lightcayn px-2 cursor-pointer'>Home</p>
+                        <p className='ml-2  hover:text-lightcayn border-b-2 border-transparent hover:border-lightcayn px-2 cursor-pointer'>Document</p>
+                        <p className='ml-2  hover:text-lightcayn border-b-2 border-transparent hover:border-lightcayn px-2 cursor-pointer'>FAQ</p>
                         <button onClick={()=>navigate('/sign-in', {replace: true})} className='ml-5 px-5 py-1.5 bg-lightcayn rounded-sm hover:bg-transparent hover:text-lightcayn border-1 border-transparent hover:border-lightcayn'>Sign In</button>
                     </div>
                 </div>
@@ -49,8 +49,8 @@ const Home = () => {
                             <button className='border-1 border-lightcayn text-lightcayn px-5 py-3 hover:bg-lightcayn hover:text-white mt-3' >Read Documentation</button>
                         </div>
                     </div>
-                    <div className='w-full md:w-6/12'>
-                        <LazyLoadImage effect='blur' src={logoHIS} className='w-full' />
+                    <div className='w-full md:w-6/12 z-0'>
+                        <LazyLoadImage effect='blur' src={logoHIS} className='w-full z-0' />
                     </div>
                 </div>
             </div>
@@ -90,10 +90,6 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-
-            
-
-
         </div>
     )
 }
