@@ -5,7 +5,9 @@
   "dependencies": {
     "@craco/craco": "^6.4.2",
     "@hookform/error-message": "^2.0.0",
+    "@syncfusion/ej2-base": "^19.3.54",
     "@syncfusion/ej2-react-documenteditor": "^19.3.55",
+    "@syncfusion/ej2-react-pdfviewer": "^19.3.54",
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
