@@ -19,6 +19,11 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 user: userUpdate
             }
+        case ActionType.SET_USER_ROLE_LIST:
+            return{
+                ...state,
+                user_role_list: action.data
+            }
         case ActionType.SET_COLLAPSE:
             return {
                 ...state,

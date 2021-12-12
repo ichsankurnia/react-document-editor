@@ -3,6 +3,7 @@ export const ActionType = {
     UPDATE_USER_DATA: "UPDATE_USER_DATA",
     SET_DATETIME_NOW: "SET_DATETIME_NOW",
     SET_COLLAPSE: "SET_COLLAPSE",
+    SET_USER_ROLE_LIST: 'SET_USER_ROLE_LIST'
 }
 
 export const setUserData = (payload) => {
@@ -17,6 +18,13 @@ export const updateUserData = (key, value) => {
         type: ActionType.UPDATE_USER_DATA,
         key: key,
         value: value
+    }
+}
+
+export const setUserRoleList = (data) => {
+    return {
+        type: ActionType.SET_USER_ROLE_LIST,
+        data: data
     }
 }
 
