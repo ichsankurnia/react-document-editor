@@ -1,0 +1,24 @@
+import { FaPlus } from "react-icons/fa"
+
+export const ButtonAdd = ({onClick, title}) => {
+    return (
+        <button onClick={onClick} className='flex items-center text-white bg-red-800 hover:bg-red-600 rounded-2xl px-5 md:px-3 py-2.5 font-medium transition duration-200 ease-in-out transform hover:scale-105'>
+            <p className='mr-2.5 hidden md:block'>{title || 'Create New'}</p>
+            <span className='cursor-pointer text-base'>
+                <FaPlus />
+            </span>
+        </button>
+    )
+}
+
+export const ButtonCancel = ({type, onClick, title}) => (
+    <button type={type || 'reset'} onClick={onClick} className='bg-gray-500 hover:bg-black text-white px-5 py-2.5 rounded-2xl mx-1 md:mx-2 font-medium transition duration-200 ease-in-out transform hover:scale-105'>
+        {title || 'Cancel'}
+    </button>
+)
+
+export const ButtonSave = ({type, onClick, title}) => (
+    <button type={type || 'submit'} onClick={onClick} className='bg-red-800 hover:bg-red-600 text-white px-6 py-2.5 rounded-2xl mx-1 md:mx-2 font-medium transition duration-200 ease-in-out transform hover:scale-105'>
+        {title || 'Save'}
+    </button>
+)

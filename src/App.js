@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 import DragDropExample from "./component/DragDropExample"
+import Auth from "./pages/Auth"
 import Dashboard from "./pages/Dashboard"
 import DocumentPage from "./pages/DocumentPage"
 import Home from "./pages/Home"
-import Login from "./pages/Login"
 import PDFViewer from "./pages/PDFViewer"
 
 const App = () => {
@@ -12,8 +12,8 @@ const App = () => {
 			<Router>
 				<Routes>
 					<Route path='/' element={<Home />} />
-					<Route path='/sign-in' element={<Login />} />
 					<Route path='/dashboard/*' element={<Dashboard />} />
+					<Route path='/auth/*' element={<Auth />} />
 					<Route path='/document-example' element={<DocumentPage />} />
 					<Route path='/pdf-example' element={<PDFViewer />} />
 					<Route path='/dragdrop-example' element={<DragDropExample />} />
