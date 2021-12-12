@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DocumentEditorContainerComponent , WordExport, SfdtExport, Selection, Editor, Toolbar } from '@syncfusion/ej2-react-documenteditor';
-import file, { docxFile, sfdtFile } from './../file';
+import file from './../file';
 
 //Inject require module.
 DocumentEditorContainerComponent.Inject(SfdtExport, Selection, Editor, WordExport, Toolbar);

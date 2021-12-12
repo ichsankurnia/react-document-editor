@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { PdfViewerComponent, Toolbar, Magnification, Navigation, LinkAnnotation, BookmarkView, ThumbnailView, Print, TextSelection, TextSearch, Annotation, FormFields, FormDesigner, Inject } from '@syncfusion/ej2-react-pdfviewer';
 import { enableRipple } from '@syncfusion/ej2-base';
-import analisa from '../assets/analisa.pdf'
 import { pdfBase64 } from '../file';
 
 enableRipple(true);

@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 const Header = ({collapse, setCollapse}) => {
     return (
         <div className='flex h-full justify-between items-center z-40'>
-            <span className='text-xl cursor-pointer hidden md:block' onClick={()=>setCollapse(!collapse)}>{collapse?<AiOutlineMenuFold />: <AiOutlineMenuUnfold />} </span>
+            <span className='text-2xl cursor-pointer transition duration-100 ease-in-out transform hover:scale-105 hidden md:block' onClick={()=>setCollapse(!collapse)}>{collapse?<AiOutlineMenuFold />: <AiOutlineMenuUnfold />} </span>
             <div className='flex items-center'>
                 <hr className="w-px h-6 bg-gray-200 mx-3" />
                 <UserMenu />

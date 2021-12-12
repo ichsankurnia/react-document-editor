@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { FaSignOutAlt, FaUserCog } from 'react-icons/fa';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Link, useNavigate } from 'react-router-dom';
+import ModalConfirm from './modal/ModalConfirm';
 
 const BG_AVATAR = ['152e4d', '0891b2', '2E8B57', '8B4513', '4B0082', '999', '000']
 
@@ -9,7 +10,7 @@ function UserMenu() {
     const [modalOut, showModalOut] = useState(false)
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
-    const userLocalStorage = JSON.parse(localStorage.getItem('agroo-user'))
+    const userLocalStorage = JSON.parse(localStorage.getItem('doc-user'))
 
     const navigate = useNavigate()
     const trigger = useRef(null);
@@ -37,7 +38,7 @@ function UserMenu() {
 
     
     const handleLogout = async () => {
-        navigate('/')
+        navigate('/auth')
         localStorage.clear()
     }
 
@@ -51,7 +52,7 @@ function UserMenu() {
                     <LazyLoadImage src={`https://ui-avatars.com/api/?name=${userLocalStorage?.fullname_var || 'Ories'}&background=${BG_AVATAR[Math.floor(Math.random() * BG_AVATAR.length)]}&color=fff`} className='rounded-full' />
                 </div>
                 <div className="flex items-center truncate">
-                    <span className="truncate ml-2 text-sm font-medium group-hover:text-lightcayn">{userLocalStorage?.fullname_var || 'Ories'}</span>
+                    <span className="truncate ml-2 text-sm font-medium group-hover:text-red-600">{userLocalStorage?.fullname_var || 'Ories'}</span>
                     <svg className="w-3 h-3 flex-shrink-0 ml-1 fill-current text-gray-400" viewBox="0 0 12 12">
                         <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
                     </svg>
@@ -69,16 +70,15 @@ function UserMenu() {
                     </div>
                     <ul>
                         <li>
-                            <Link className="font-medium text-sm text-black hover:text-lightcayn flex items-center py-1 px-3" 
-                                to='/admin/profile' onClick={() => setDropdownOpen(!dropdownOpen)}
+                            <Link className="font-medium text-sm text-black hover:text-red-600 flex items-center py-1 px-3" 
+                                to='/dashboard/profile' onClick={() => setDropdownOpen(!dropdownOpen)}
                             >
                                 <FaUserCog />&ensp;Settings
                             </Link>
                         </li>
                         <li>
-                            <span className="font-medium text-sm text-red-400 hover:text-lightcayn flex items-center py-1 px-3 cursor-pointer"
-                                // onClick={() => showModalOut(true)}
-                                onClick={handleLogout}
+                            <span className="font-medium text-sm text-red-400 hover:text-red-600 flex items-center py-1 px-3 cursor-pointer"
+                                onClick={() => showModalOut(true)}
                             >
                                 <FaSignOutAlt />&ensp;Sign Out
                             </span>
@@ -88,6 +88,7 @@ function UserMenu() {
             </div>
             }
             
+            {modalOut && <ModalConfirm message='Are you sure to logout?' onCancel={()=>showModalOut(false)} onOK={handleLogout} />}
         </div>
     )
 }
