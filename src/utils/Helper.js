@@ -1,3 +1,5 @@
+import * as Icons from "react-icons/md";
+
 class Helper {
     static validateForm = async (payload, allowEmpty) => {
         await Promise.all(Object.keys(payload).map(async key => {
@@ -62,6 +64,17 @@ class Helper {
             return letter
         }
     }
+
+    /* Your icon name from database data can now be passed as prop */
+    static DynamicIcon = ({ name }) => {
+        const IconComponent = Icons[name];
+
+        if (!IconComponent) { // Return a default one
+            return <Icons.MdHelp />;
+        }
+
+        return <IconComponent />;
+    };
 }
 
 export default Helper
