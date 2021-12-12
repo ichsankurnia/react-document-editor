@@ -3,21 +3,15 @@ import Header from "../component/Header";
 import Sidebar from "../component/Sidebar";
 import NotFoundContainer from "../container/NotFoundContainer";
 
-import { RouteAdminRole } from "../route";
+import { DashboardRoutes } from "../route";
 
 
 function Dashboard() {
 
     // MAIN ROUTE
 	const getRoutes = () => {
-		return RouteAdminRole.map((data, key) => {
-            if(data.routes && data.routes.length> 0){
-                return data.routes.map(({layout, path, component}, key) => {
-                    return <Route path={path} element={component} key={key} />
-                })
-            }else{
-                return <Route path={data.path} element={data.component} key={key} />
-            }
+		return DashboardRoutes.map((data, key) => {
+			return <Route path={data.path} element={data.component} key={key} />
 		})
 	}
 
