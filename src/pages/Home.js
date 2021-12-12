@@ -33,7 +33,7 @@ const Home = () => {
                         <p className=' hover:text-lightcayn border-b-2 border-transparent hover:border-lightcayn px-2 cursor-pointer'>Home</p>
                         <p className='ml-2  hover:text-lightcayn border-b-2 border-transparent hover:border-lightcayn px-2 cursor-pointer'>Document</p>
                         <p className='ml-2  hover:text-lightcayn border-b-2 border-transparent hover:border-lightcayn px-2 cursor-pointer'>FAQ</p>
-                        <button onClick={()=>navigate('/sign-in', {replace: true})} className='ml-5 px-5 py-1.5 bg-lightcayn rounded-sm hover:bg-transparent hover:text-lightcayn border-1 border-transparent hover:border-lightcayn'>Sign In</button>
+                        <button onClick={()=>navigate('/auth', {replace: true})} className='ml-5 px-5 py-1.5 bg-lightcayn rounded-sm hover:bg-transparent hover:text-lightcayn border-1 border-transparent hover:border-lightcayn'>Sign In</button>
                     </div>
                 </div>
             </div>

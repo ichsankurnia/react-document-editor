@@ -12,13 +12,13 @@
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #0891b2; 
+    background: rgba(153, 27, 27, 1); 
     border-radius: 20px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #152e4d;
+    background: rgba(220, 38, 38, 1); 
     cursor: pointer;
 }
 
@@ -48,10 +48,10 @@
     justify-content: space-between;
 }
 .pulse-bubble {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background-color: #3ff9dc;
+    width: 24px;
+    height: 24px;
+    border-radius: 99px;
+    background-color: rgba(153, 27, 27, 1);
 }
 .pulse_bubble-1 {
     animation: pulse .4s ease .1s infinite alternate;
