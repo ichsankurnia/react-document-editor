@@ -78,37 +78,37 @@ export const RouteAdminRole = [
     {
         name_var: 'Dashboard',
         url_var: '',
-        icon_var: 'MdHome',
+        icon_var: 'ri-home-3-fill',
         children: []
     },
     {
         name_var: 'Document',
         url_var: 'document',
-        icon_var: 'MdHome',
+        icon_var: 'ri-home-3-fill',
         children: []
     },
     {
         name_var: 'User',
         url_var: 'user',
-        icon_var: 'MdHome',
+        icon_var: 'ri-home-3-fill',
         children: []
     },
     {
         name_var: 'User Role',
         url_var: 'user-role',
-        icon_var: 'MdHome',
+        icon_var: 'ri-home-3-fill',
         children: []
     },
     {
         name_var: 'Parameter Config',
         url_var: 'parameter-config',
-        icon_var: 'MdHome',
+        icon_var: 'ri-home-3-fill',
         children: []
     },
     {
         name_var: 'Profile',
         url_var: 'profile',
-        icon_var: 'MdHome',
+        icon_var: 'ri-home-3-fill',
         children: []
     }
 ]
