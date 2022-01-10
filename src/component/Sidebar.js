@@ -1,5 +1,4 @@
 import { Fragment, useEffect, useRef, useState } from "react";
-import { IoMdArrowDropright, IoMdArrowDropdown } from "react-icons/io";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RouteAdminRole } from "../route";
 import Header from "./Header";
@@ -84,10 +83,10 @@ const Sidebar = ({collapse}) => {
                 <div>
                     <div className={`flex items-center justify-between px-6 py-3.5 -mx-2 -my-1 cursor-pointer text-white rounded-sm ${activeDrop(url_var) || menuActive===url_var? 'bg-red-700 border-white':''} border-l-8 border-transparent hover:border-white hover:bg-red-900`} onClick={()=>handleShowSubMenu(url_var)}>
                         <div className='flex item-center'>
-                            <span className='mr-3 text-base'><Helper.DynamicIcon name={icon_var} /></span>
+                            <i className={`${icon_var}`} />
                             <p>{Helper.capitalEachWord(name_var)}</p>
                         </div>
-                        {activeDrop(url_var) || menuActive===url_var? <IoMdArrowDropdown className='text-lg' /> : <IoMdArrowDropright className='text-lg' /> }
+                        {activeDrop(url_var) || menuActive===url_var? <i className='ri-arrow-drop-down-line text-lg' /> : <i className='ri-arrow-drop-right-line text-lg' /> }
                     </div>
                     <ul  className={`${menuActive?.includes(url_var)? 'py-1 ml-5 transition duration-500 ease-in-out transform hover:scale-105' : 'hidden'}`}>
                     {children.map(({url_var, name_var}, key) => 
@@ -101,8 +100,8 @@ const Sidebar = ({collapse}) => {
                 </div>
                 :
                 <div  onClick={() => setSidebarOpen(false)}>
-                    <Link to={url_var} className={`flex item-center px-6 py-3.5 -mx-2 -my-1 text-white rounded-sm ${activePath(url_var)&& 'bg-red-700 border-white'} border-l-8 border-transparent hover:border-white hover:bg-red-900`}>
-                        <span className='mr-3 flex items-center text-base'><Helper.DynamicIcon name={icon_var} /></span>
+                    <Link to={url_var} className={`flex item-center px-6 py-3.5 -mx-2 -my-1 rounded-sm ${activePath(url_var)? 'bg-red-700 text-white border-white':'text-gray-300'} border-l-8 border-transparent hover:text-white hover:border-white hover:bg-red-900`}>
+                        <i className={`${icon_var} mr-2`} />
                         <p>{Helper.capitalEachWord(name_var)}</p>
                     </Link>
                 </div>
@@ -117,7 +116,7 @@ const Sidebar = ({collapse}) => {
                 {children && children.length> 0?
                 <div>
                     <div className={`mb-1 cursor-pointer ${activeDrop(url_var) || menuActive===url_var? 'text-white scale-150' : 'text-gray-300'} hover:text-white mb-2.5 transition duration-300 ease-in-out transform hover:scale-150`} onMouseEnter={()=>handleShowSubMenu(url_var)} onClick={()=>handleShowSubMenu(url_var)}>
-                        <span className='text-xl'><Helper.DynamicIcon name={icon_var} /></span>
+                        <i className={`${icon_var}`} />
                     </div>
                     <ul  className={`${menuActive===url_var? 'bg-red-800 absolute top-0 left-14 z-50 pl-2 pr-5 w-max rounded transition duration-500 ease-in-out transform hover:scale-105' : 'hidden'}`}>
                     {children.map(({url_var, name_var, icon_var}, key) => 
@@ -125,7 +124,7 @@ const Sidebar = ({collapse}) => {
                             <Link to={url_var} onClick={() => setSidebarOpen(false)}
                                 className={`px-4 py-2.5 rounded-lg my-1 ${activePath(url_var)? 'text-white bg-red-900 rounded -mr-3': 'text-gray-300'} hover:text-white block transition duration-150`}>
                                 <div className="flex items-center">
-                                    <span className='mr-4 text-base'><Helper.DynamicIcon name={icon_var} /></span>
+                                    <i className={`${icon_var}`} />
                                     <p>{Helper.capitalEachWord(name_var)}</p>
                                 </div>
                             </Link>
@@ -135,8 +134,8 @@ const Sidebar = ({collapse}) => {
                 </div>
                 :
                 <Link to={url_var} onClick={() => setSidebarOpen(false)}
-                    className={`${activePath(url_var)? 'text-white scale-150': 'text-gray-300'} mb-2.5 hover:text-white transition duration-500 ease-in-out transform hover:scale-150`}>
-                    <span className='text-xl'><Helper.DynamicIcon name={icon_var} /></span>
+                    className={`${activePath(url_var)? 'bg-white text-red-800 scale-150': 'text-white'} w-5 h-5 rounded flex justify-center items-center hover:bg-white mb-2 hover:text-red-800 transition duration-200 ease-in-out transform hover:scale-150`}>
+                    <i className={`${icon_var}`} />
                 </Link>
                 }
             </div>
@@ -169,9 +168,9 @@ const Sidebar = ({collapse}) => {
                 
                 {/* SIDEBAR */}
                 <div id="sidebar" ref={sidebar}
-                    className={`absolute z-40 left-0 top-0 md:static md:left-auto md:top-auto h-screen bg-red-800 md:translate-x-0 transform transition-transform duration-200 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-64'} ${collapse&& 'w-64 animate-fade-left-to-right'} `}
+                    className={`absolute z-40 left-0 top-0 md:static md:left-auto md:top-auto h-screen bg-red-800 md:translate-x-0 transform transition-all duration-500 ease-in-out ${sidebarOpen? 'translate-x-0' : '-translate-x-64'}  ${collapse?'w-64':'w-18'} `}
                 >
-                    <div className={`overflow-y-auto ${collapse? 'px-1 py-4': 'p-5'} flex flex-col items-center h-full font-poppins text-white`}>
+                    <div className={`overflow-y-auto ${collapse? 'px-1 py-4': 'p-5'} flex flex-col items-center h-full font-poppins text-white overflow-x-hidden`}>
                         <span className='mt-2 cursor-pointer' onClick={handleClickLogo}>{collapse? 'App Logo' : 'Logo'}</span>
 
                         {collapse? 

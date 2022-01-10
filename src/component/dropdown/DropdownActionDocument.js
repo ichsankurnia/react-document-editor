@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { FaEdit, FaEllipsisH, FaEye, FaTrash } from "react-icons/fa";
 import ModalConfirm from "../modal/ModalConfirm";
 
 
@@ -43,7 +42,7 @@ const DropdownActionDocument = ({onEdit, onDelete}) => {
     return (
         <div className="relative inline-flex justify-center item-center flex-row-reverse">
             <button onClick={() => setDropdownOpen(!dropdownOpen)} className="relative z-5 block rounded-md focus:outline-none cursor-pointer">
-                <span className='text-gray-500 text-lg hover:text-agroo5'><FaEllipsisH /> </span>
+                <span className='text-gray-500 text-lg hover:text-agroo5'><i className="ri-more-fill"></i> </span>
             </button>
 
             {dropdownOpen &&
@@ -51,11 +50,11 @@ const DropdownActionDocument = ({onEdit, onDelete}) => {
                 <div ref={dropdown} onFocus={() => setDropdownOpen(true)} onBlur={() => setDropdownOpen(false)} >
                     <div className="flex flex-col w-32">
                         <button onClick={handleEdit} className="px-4 py-2 text-sm text-gray-700 hover:bg-agroo5 hover:text-white inline-flex rounded-md">
-                            <FaEye className='mr-3 mt-0.5' />
+                            <i className='ri-eye-fill mr-3 mt-0.5' />
                             <p>View Detail</p>
                         </button>
                         <button onClick={() => showConfirmDelete(true)} className="mt-1 px-4 py-2 text-sm text-gray-700 hover:bg-agroo5 hover:text-white inline-flex rounded-md">
-                            <FaTrash className='mr-3 mt-0.5' />
+                            <i className='ri-delete-bin-5-fill mr-3 mt-0.5' />
                             <p>Delete</p>
                         </button>
                         

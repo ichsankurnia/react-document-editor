@@ -4,7 +4,6 @@ import Dropzone from 'react-dropzone'
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { connect } from "react-redux";
 import { v4 as uuid } from "uuid";
-import { MdKeyboardArrowLeft } from "react-icons/md"
 import { ButtonCancel, ButtonSave } from "../../component/button/CustomButton"
 
 import { setCollapse } from "../../reduxs/action/actions";
@@ -17,7 +16,7 @@ import { onDragEnd } from "../../component/DragDropExample";
 DocumentEditorContainerComponent.Inject(SfdtExport, Selection, Editor, WordExport, Toolbar);
 
 const containerInput = 'flex flex-col w-full sm:w-1/2'
-const inputText = 'outline-none border-1 border-gray-200 rounded-lg py-2 px-3 sm:p-3 mt-1.5'
+const inputText = 'outline-none border-1 border-gray-200 rounded-lg py-2 px-3 sm:p-3 mt-1 focus:ring-1 focus:ring-red-800 focus:border-red-800'
 
 const data_user = [
     { id: uuid(), name: "User 1", role: 'Admin' },
@@ -122,7 +121,7 @@ const NewDocument = ({setCollapse}) => {
                 <button className='w-9 h-9 md:w-10 md:h-10 bg-red-800 text-white hover:bg-red-600 shadow rounded-full flex justify-center items-center text-3xl transition duration-200 ease-in-out transform hover:scale-110'
                     onClick={()=>navigate(-1)}
                 >
-                    <MdKeyboardArrowLeft />
+                    <i class="ri-arrow-left-s-line"></i>
                 </button>
                 <h2 className='text-base font-medium text-right'>New Document</h2>
             </div>
@@ -142,7 +141,7 @@ const NewDocument = ({setCollapse}) => {
                 </div>
                 <div className='mt-10 flex flex-col items-center justify-center'>
                     <h1 className='font-medium'>Add Contributor for this document</h1>
-                    <p className='text-center'>Drag user from left to right column to add user for document contributor</p>
+                    <p className='text-center'>Drag user from left to right column to add user as document contributor</p>
                     <div className='flex justify-center mt-5'>
                     <DragDropContext
                         onDragEnd={result => onDragEnd(result, columns, setColumns)}

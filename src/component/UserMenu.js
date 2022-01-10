@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FaSignOutAlt, FaUserCog } from 'react-icons/fa';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Link, useNavigate } from 'react-router-dom';
 import ModalConfirm from './modal/ModalConfirm';
@@ -38,8 +37,8 @@ function UserMenu() {
 
     
     const handleLogout = async () => {
-        navigate('/auth')
         localStorage.clear()
+        navigate('/auth')
     }
 
     return (
@@ -73,14 +72,14 @@ function UserMenu() {
                             <Link className="font-medium text-sm text-black hover:text-red-600 flex items-center py-1 px-3" 
                                 to='/dashboard/profile' onClick={() => setDropdownOpen(!dropdownOpen)}
                             >
-                                <FaUserCog />&ensp;Settings
+                                <i className="ri-settings-4-fill"></i>&ensp;Settings
                             </Link>
                         </li>
                         <li>
                             <span className="font-medium text-sm text-red-400 hover:text-red-600 flex items-center py-1 px-3 cursor-pointer"
                                 onClick={() => showModalOut(true)}
                             >
-                                <FaSignOutAlt />&ensp;Sign Out
+                                <i className="ri-logout-circle-fill"></i>&ensp;Sign Out
                             </span>
                         </li>
                     </ul>
