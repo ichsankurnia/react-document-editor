@@ -1,4 +1,4 @@
-import * as Icons from "react-icons/md";
+// import * as Icons from "react-icons/md";
 
 class Helper {
     static validateForm = async (payload, allowEmpty) => {
@@ -66,15 +66,15 @@ class Helper {
     }
 
     /* Your icon name from database data can now be passed as prop */
-    static DynamicIcon = ({ name }) => {
-        const IconComponent = Icons[name];
+    // static DynamicIcon = ({ name }) => {
+    //     const IconComponent = Icons[name];
 
-        if (!IconComponent) { // Return a default one
-            return <Icons.MdHelp />;
-        }
+    //     if (!IconComponent) { // Return a default one
+    //         return <Icons.MdHelp />;
+    //     }
 
-        return <IconComponent />;
-    };
+    //     return <IconComponent />;
+    // };
 }
 
 export default Helper
