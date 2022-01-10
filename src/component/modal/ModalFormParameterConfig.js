@@ -4,7 +4,7 @@ import {ButtonSave, ButtonCancel} from '../button/CustomButton'
 import { useCallback, useEffect } from 'react';
 
 const containerInput = 'flex flex-col w-full sm:w-1/2'
-const inputText = 'outline-none border-1 border-gray-200 rounded-lg py-2 px-3 sm:p-3  mt-1'
+const inputText = 'outline-none border-1 border-gray-200 rounded-lg py-2 px-3 sm:p-3 mt-1 focus:ring-1 focus:ring-red-800 focus:border-red-800'
 
 const ModalFormParameterConfig = ({data, onCancel, onSubmit}) => {
     const {

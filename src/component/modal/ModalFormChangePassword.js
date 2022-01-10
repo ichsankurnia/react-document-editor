@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import {ButtonSave, ButtonCancel} from '../button/CustomButton'
 
 const containerInput = 'flex flex-col w-full sm:w-1/2'
-const inputText = 'outline-none border-1 border-gray-200 rounded-lg py-2 px-3 sm:p-3 mt-1'
+const inputText = 'outline-none border-1 border-gray-200 rounded-lg py-2 px-3 sm:p-3 mt-1 focus:ring-1 focus:ring-red-800 focus:border-red-800'
 
 const ModalFormChangePassword = ({onCancel, onSubmit}) => {
     const [errPass, showErrPas] = useState(false)

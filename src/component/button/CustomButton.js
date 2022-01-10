@@ -1,12 +1,8 @@
-import { FaPlus } from "react-icons/fa"
-
 export const ButtonAdd = ({onClick, title}) => {
     return (
-        <button onClick={onClick} className='flex items-center text-white bg-red-800 hover:bg-red-600 rounded-2xl px-5 md:px-3 py-2.5 font-medium transition duration-200 ease-in-out transform hover:scale-105'>
+        <button onClick={onClick} className='flex items-center text-white bg-red-800 hover:bg-red-600 rounded-3xl px-5 md:px-3 py-1 font-medium transition duration-200 ease-in-out transform hover:scale-105'>
             <p className='mr-2.5 hidden md:block'>{title || 'Create New'}</p>
-            <span className='cursor-pointer text-base'>
-                <FaPlus />
-            </span>
+            <i className="ri-add-fill text-xl" />
         </button>
     )
 }
