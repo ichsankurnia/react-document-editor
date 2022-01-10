@@ -7,6 +7,7 @@ import Loader from "../../component/modal/Loader"
 import { ButtonAdd } from "../../component/button/CustomButton"
 import DropdownTwoOption from "../../component/dropdown/DropTwoOption"
 import ModalFormParameterConfig from "../../component/modal/ModalFormParameterConfig"
+import SearchField from "../../component/textfield/SearchField"
 
 
 const ParameterConfig = ({user}) => {
@@ -103,7 +104,7 @@ const ParameterConfig = ({user}) => {
                 {/* TABLE */}
                 <div className='flex justify-between items-center mb-3'>
                     <ButtonAdd onClick={() => showModalForm(true)} />
-                    <input type='search' onChange={handleSearch} placeholder='Cari parameter' className='outline-none border-1 border-gray-300 rounded-2xl px-2 sm:px-3 py-2 focus:border-agroo4 focus:border-2' />
+                    <SearchField placeholder='Search parameter...' onChange={handleSearch} />
                 </div>
                 <TableFull dataTable={filterData} columnTable={columns} />
 

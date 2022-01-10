@@ -7,19 +7,18 @@ import { setUserRoleList } from "../../reduxs/action/actions";
 import { createNewUserGroup, deleteUserGroup, getAllUserGroup, updateUserGroup } from "../../api/user-api"
 
 import TableFull from "../../component/table/TableFull"
-import ModalMessage from "../../component/modal/ModalMessage"
 import Loader from "../../component/modal/Loader"
 import { ButtonAdd } from "../../component/button/CustomButton"
 import DropdownTwoOption from "../../component/dropdown/DropTwoOption"
 import ModalFormUserRole from "../../component/modal/ModalFormUserRole";
+import SearchField from "../../component/textfield/SearchField";
+import { toast } from "react-toastify";
 
 
 const UserRole = ({user, userRole, setUserRoleList}) => {
     const [loader, showLoader] = useState(false)
     const [modalUser, showModalUser] = useState(false)
     const [isUpdate, setIsUpdate] = useState(false)
-    const [modalErr, showModalErr] = useState(false)
-    const [errMessage, setErrMessage] = useState('')
     const [dataUser, setDataUser] = useState([])
     const [filterData, setFilterData] = useState([])
     const [selectedUser, setSelectedUser] = useState(null)
@@ -43,11 +42,10 @@ const UserRole = ({user, userRole, setUserRoleList}) => {
             //     navigate('/auth')
             // }
             else{
-                setErrMessage(res.data.message)
-                showModalErr(true)
+                toast.error(res.data.message)
             }
         }else{
-            fetchUser()
+            toast.error(`${res.config?.url} ${res.message}`)
         }
     }, [navigate, setUserRoleList])
 
@@ -78,15 +76,15 @@ const UserRole = ({user, userRole, setUserRoleList}) => {
         
         if(res.data){
             if(res.data.code === 0){
+                toast.success(res.data.message)
                 fetchUser()
                 resetForm()
             }else{
-                setErrMessage(res.data.message)
-                showModalErr(true)
+                toast.error(res.data.message)
                 showLoader(false)
             }
         }else{
-            alert(`${res.config?.url} ${res.message}`)
+            toast.error(`${res.config?.url} ${res.message}`)
         }
     }
 
@@ -96,23 +94,21 @@ const UserRole = ({user, userRole, setUserRoleList}) => {
         console.log("DELETE USER Group :", res)
         if(res.data){
             if(res.data.code === 0){
+                toast.success(res.data.message)
                 fetchUser()
             }else{
-                setErrMessage(res.data.message)
-                showModalErr(true)
+                toast.error(res.data.message)
             }
         }else{
-            alert(`${res.config?.url} ${res.message}`)
+            toast.error(`${res.config?.url} ${res.message}`)
         }
     }
 
     const resetForm = () => {
-        setErrMessage('')
         setSelectedUser(null)
         setIsUpdate(false)
         showModalUser(false)
         showLoader(false)
-        showModalErr(false)
     }
 
     const columns = [
@@ -179,7 +175,7 @@ const UserRole = ({user, userRole, setUserRoleList}) => {
                 {/* TABLE */}
                 <div className='flex justify-between items-center mb-3'>
                     <ButtonAdd onClick={() => showModalUser(true)} />
-                    <input type='search' onChange={handleSearch} placeholder='Search Role' className='outline-none border-1 border-gray-300 rounded-2xl px-2 sm:px-3 py-2 focus:border-agroo4 focus:border-2' />
+                    <SearchField placeholder='Search user role...' onChange={handleSearch} />
                 </div>
                 <TableFull dataTable={filterData} columnTable={columns} />
 
@@ -190,7 +186,6 @@ const UserRole = ({user, userRole, setUserRoleList}) => {
                 onCancel={resetForm}
                 onSubmit={handleReceiveDataForm}
             />}
-            {modalErr && <ModalMessage message={errMessage} onClose={()=>showModalErr(false)} />}
             {loader && <Loader />}
         </div>
     )

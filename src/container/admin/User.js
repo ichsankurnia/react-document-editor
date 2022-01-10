@@ -5,21 +5,19 @@ import { connect } from "react-redux"
 import { createNewUser, disableUser, getAllUser, updateUser } from "../../api/user-api"
 
 import TableFull from "../../component/table/TableFull"
-import { FaUser, FaUserFriends, FaUsers, FaUserSlash } from "react-icons/fa"
-import ModalMessage from "../../component/modal/ModalMessage"
 import Loader from "../../component/modal/Loader"
 import { ModalFormUser } from "../../component/modal/ModalFormUser"
 import { ButtonAdd } from "../../component/button/CustomButton"
 import DropdownActionUser from "../../component/dropdown/DropdownActionUser"
 import ModalFormChangePassword from "../../component/modal/ModalFormChangePassword"
+import SearchField from "../../component/textfield/SearchField"
+import { toast } from "react-toastify"
 
 const User = ({user, userRole}) => {
     const [loader, showLoader] = useState(false)
     const [modalUser, showModalUser] = useState(false)
     const [isUpdate, setIsUpdate] = useState(false)
     const [modalChangePass, showModalChangePass] = useState()
-    const [modalErr, showModalErr] = useState(false)
-    const [errMessage, setErrMessage] = useState('')
     const [dataUser, setDataUser] = useState([])
     const [filterData, setFilterData] = useState([])
     const [selectedUser, setSelectedUser] = useState(null)
@@ -42,11 +40,10 @@ const User = ({user, userRole}) => {
             //     navigate('/auth')
             // }
             else{
-                setErrMessage(res.data.message)
-                showModalErr(true)
+                toast.error(res.data.message)
             }
         }else{
-            fetchUser()
+            toast.error(`${res.config?.url} ${res.message}`)
         }
     }, [navigate])
 
@@ -83,15 +80,15 @@ const User = ({user, userRole}) => {
         
         if(res.data){
             if(res.data.code === 0){
+                toast.success(res.data.message)
                 fetchUser()
                 resetForm()
             }else{
-                setErrMessage(res.data.message)
-                showModalErr(true)
+                toast.error(res.data.message)
                 showLoader(false)
             }
         }else{
-            alert(`${res.config?.url} ${res.message}`)
+            toast.error(`${res.config?.url} ${res.message}`)
         }
     }
 
@@ -101,24 +98,22 @@ const User = ({user, userRole}) => {
         console.log("DELETE USER :", res)
         if(res.data){
             if(res.data.code === 0){
+                toast.success(res.data.message)
                 fetchUser()
             }else{
-                setErrMessage(res.data.message)
-                showModalErr(true)
+                toast.error(res.data.message)
             }
         }else{
-            alert(`${res.config?.url} ${res.message}`)
+            toast.error(`${res.config?.url} ${res.message}`)
         }
     }
 
     const resetForm = () => {
-        setErrMessage('')
         setSelectedUser(null)
         setIsUpdate(false)
         showModalUser(false)
         showModalChangePass(false)
         showLoader(false)
-        showModalErr(false)
     }
 
     const columns = [
@@ -213,8 +208,8 @@ const User = ({user, userRole}) => {
 
             <div className='flex flex-col md:flex-row items-center justify-between my-6'>
                 <div className='w-full md:w-4/12 mb-5 md:mb-0 md:mr-6 flex justify-evenly items-center bg-white rounded-2xl shadow-xl px-5 py-8'>
-                    <div className='bg-green-50 rounded-lg text-green-900 w-14 h-14 flex items-center justify-center text-2xl'>
-                        <FaUsers />
+                    <div className='bg-red-50 rounded-lg text-red-900 w-14 h-14 flex items-center justify-center text-2xl'>
+                        <i className="ri-user-fill"></i>
                     </div>
                     <div className='flex flex-col'>
                         <h1 className='font-semibold text-3xl mb-1'>{dataUser?.length}</h1>
@@ -222,8 +217,8 @@ const User = ({user, userRole}) => {
                     </div>
                 </div>
                 <div className='w-full md:w-4/12 mb-5 md:mb-0 md:mr-6 flex justify-evenly items-center bg-white rounded-2xl shadow-xl px-5 py-8'>
-                    <div className='bg-green-50 rounded-lg text-green-900 w-14 h-14 flex items-center justify-center text-2xl'>
-                        <FaUser />
+                    <div className='bg-red-50 rounded-lg text-red-900 w-14 h-14 flex items-center justify-center text-2xl'>
+                        <i className="ri-user-follow-fill"></i>
                     </div>
                     <div className='flex flex-col'>
                         <h1 className='font-semibold text-3xl mb-1'>{dataUser?.filter(data => data.status_int === 1).length}</h1>
@@ -231,8 +226,8 @@ const User = ({user, userRole}) => {
                     </div>
                 </div>
                 <div className='w-full md:w-4/12 mb-5 md:mb-0 md:mr-6 flex justify-evenly items-center bg-white rounded-2xl shadow-xl px-5 py-8'>
-                    <div className='bg-green-50 rounded-lg text-green-900 w-14 h-14 flex items-center justify-center text-2xl'>
-                        <FaUserSlash />
+                    <div className='bg-red-50 rounded-lg text-red-900 w-14 h-14 flex items-center justify-center text-2xl'>
+                        <i className="ri-user-unfollow-fill"></i>
                     </div>
                     <div className='flex flex-col'>
                         <h1 className='font-semibold text-3xl mb-1'>{dataUser?.filter(data => data.status_int !== 1).length}</h1>
@@ -240,8 +235,8 @@ const User = ({user, userRole}) => {
                     </div>
                 </div>
                 <div className='w-full md:w-4/12 flex justify-evenly items-center bg-white rounded-2xl shadow-xl px-5 py-8'>
-                    <div className='bg-green-50 rounded-lg text-green-900 w-14 h-14 flex items-center justify-center text-2xl'>
-                        <FaUserFriends />
+                    <div className='bg-red-50 rounded-lg text-red-900 w-14 h-14 flex items-center justify-center text-2xl'>
+                        <i className="ri-user-5-fill"></i>
                     </div>
                     <div className='flex flex-col'>
                         <h1 className='font-semibold text-3xl mb-1'>{dataUser?.filter(data => data.user_group_id_int === 3).length}</h1>
@@ -258,7 +253,7 @@ const User = ({user, userRole}) => {
                 {/* TABLE */}
                 <div className='flex justify-between items-center mb-3'>
                     <ButtonAdd onClick={() => showModalUser(true)} />
-                    <input type='search' onChange={handleSearch} placeholder='Search User' className='outline-none border-1 border-gray-300 rounded-2xl px-2 sm:px-3 py-2 focus:border-agroo4 focus:border-2' />
+                    <SearchField placeholder='Search user...' onChange={handleSearch} />
                 </div>
                 <TableFull dataTable={filterData} columnTable={columns} />
 
@@ -270,7 +265,6 @@ const User = ({user, userRole}) => {
                 onSubmit={handleReceiveDataForm}
             />}
             {modalChangePass && <ModalFormChangePassword onCancel={resetForm} onSubmit={handleReceiveDataForm} />}
-            {modalErr && <ModalMessage message={errMessage} onClose={()=>showModalErr(false)} />}
             {loader && <Loader />}
         </div>
     )

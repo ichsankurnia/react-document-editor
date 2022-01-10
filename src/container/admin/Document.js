@@ -5,17 +5,16 @@ import { useNavigate } from "react-router-dom"
 import ModalFormProject from "../../component/modal/ModalFormProject"
 import { ButtonAdd } from "../../component/button/CustomButton"
 import TableFull from "../../component/table/TableFull";
-import ModalMessage from "../../component/modal/ModalMessage";
 import Loader from "../../component/modal/Loader"
 import DropdownTwoOption from "../../component/dropdown/DropTwoOption"
 
 import { createNewProject, deleteProject, getAllProject, updateProject } from "../../api/project-api"
+import SearchField from "../../component/textfield/SearchField"
+import { toast } from "react-toastify"
 
 
 const Document = ({user}) => {
     const [loader, showLoader] = useState(false)
-    const [modalErr, showModalErr] = useState(false)
-    const [messageErr, setMessageErr] = useState(false)
     const [modalForm, showModalForm] = useState(false)
     const [dataProject, setDataProject] = useState([])
     const [filterData, setFilterData] = useState([])
@@ -39,11 +38,10 @@ const Document = ({user}) => {
                 showLoader(true)
                 navigate('/auth')
             }else{
-                setMessageErr(res.data.message)
-                showModalErr(true)
+                toast.error(res.data.message)
             }
         }else{
-            alert(`${res.config?.url} ${res.message}`)
+            toast.error(`${res.config?.url} ${res.message}`)
         }
     }, [navigate])
 
@@ -74,14 +72,14 @@ const Document = ({user}) => {
         
         if(res.data){
             if(res.data.code === 0){
+                toast.success(res.data.message)
                 fetchData()
             }else{
-                setMessageErr(res.data.message)
-                showModalErr(true)
+                toast.error(res.data.message)
                 showLoader(false)
             }
         }else{
-            alert(`${res.config?.url} ${res.message}`)
+            toast.error(`${res.config?.url} ${res.message}`)
         }
     }
 
@@ -95,15 +93,15 @@ const Document = ({user}) => {
         showLoader(false)
         if(res.data){
             if(res.data.code === 0){
+                toast.success(res.data.message)
                 fetchData()
             }else if(res.data.code === 99){
                 navigate('/auth')
             }else{
-                setMessageErr(res.data.message)
-                showModalErr(true)
+                toast.error(res.data.message)
             }
         }else{
-            alert(`${res.config?.url} ${res.message}`)
+            toast.error(`${res.config?.url} ${res.message}`)
         }
     }
 
@@ -183,13 +181,12 @@ const Document = ({user}) => {
                 </div>
                 <div className='flex justify-between items-center mb-3'>
                     <ButtonAdd onClick={() => navigate('/dashboard/document-new')} />
-                    <input type='search' onChange={handleSearch} placeholder='Search Document' className='outline-none border-1 border-gray-300 rounded-2xl px-2 sm:px-3 py-2 focus:border-agroo3 focus:border-2' />
+                    <SearchField placeholder='Search document...' onChange={handleSearch} />
                 </div>
                 <TableFull dataTable={filterData} columnTable={columns} />
             </div>
 
             {modalForm && <ModalFormProject data={selectedData} onCancel={resetForm} onSubmit={handleReceiveDataForm} />}
-            {modalErr && <ModalMessage message={messageErr} onClose={()=>showModalErr(false)} />}
             {loader && <Loader />}
         </div>
     )
