@@ -12,6 +12,12 @@ const Register = () => {
     } = useForm({ criteriaMode: "all" });
 
     const onValidForm = (payload) => {
+        const {password, confirm_password} = payload
+        
+        if(password !== confirm_password){
+            alert('Password not match')
+            return
+        }
         navigate('/auth/otp-validate', {replace: true})
     }
 
