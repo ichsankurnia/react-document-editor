@@ -134,8 +134,8 @@ const Sidebar = ({collapse}) => {
                 </div>
                 :
                 <Link to={url_var} onClick={() => setSidebarOpen(false)}
-                    className={`${activePath(url_var)? 'bg-white text-red-800 scale-150': 'text-white'} w-5 h-5 rounded flex justify-center items-center hover:bg-white mb-2 hover:text-red-800 transition duration-200 ease-in-out transform hover:scale-150`}>
-                    <i className={`${icon_var}`} />
+                    className={`${activePath(url_var)? 'bg-white text-red-800 scale-150': 'text-white'} w-6 h-6 rounded flex justify-center items-center hover:bg-white mb-2 hover:text-red-800 transition duration-200 ease-in-out transform hover:scale-150`}>
+                    <i className={`${icon_var} text-lg`} />
                 </Link>
                 }
             </div>

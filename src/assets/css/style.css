@@ -1,3 +1,7 @@
+body{
+    background-color: #7f1d1d;
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 5px;
