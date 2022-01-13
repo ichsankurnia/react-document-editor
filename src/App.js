@@ -23,16 +23,19 @@ const App = () => {
 					{/* <Route path='*' element={<Navigate replace to='/' />} /> */}
 				</Routes>
 			</Router>
-			<ToastContainer
-				position='bottom-right'
-				autoClose={5000}
-				hideProgressBar={false}
-				newestOnTop={false}
-				closeOnClick
-				rtl={false}
-				pauseOnFocusLoss
-				draggable
-				pauseOnHover />
+			<div className="text-sm">
+				<ToastContainer
+					position='bottom-right'
+					// theme='dark'
+					autoClose={5000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					draggable
+					pauseOnHover />
+			</div>
 		</div>
 	)
 }
