@@ -25,33 +25,31 @@ const UserRole = ({user, userRole, setUserRoleList}) => {
 
     const navigate = useNavigate()
 
-    const fetchUser = useCallback( async () => {
+    const fetchUserRole = useCallback( async () => {
         showLoader(true)
         const res = await getAllUserGroup(localStorage.getItem('doc-token'))
 
         showLoader(false)
         console.log('Fetch User Group :', res)
         if(res.data){
-            if(res.data.code === 0){
+            if(res.data.status === '00'){
                 setDataUser(res.data.data)
                 setFilterData(res.data.data)
-                setUserRoleList(res.data.data)
-				localStorage.setItem('doc-role', JSON.stringify(res.data.data))
-            } 
-            // else if(res.data.code === 99){
-            //     navigate('/auth')
-            // }
-            else{
-                toast.error(res.data.message)
+            }else if(res.data.status === '01'){
+                toast.info('Session expired, please login!')
+                navigate('/auth')
+            }else{
+                // toast.error(res.data.message)
+                toast.error(`${res.config?.url} ${res.status} ${res.statusText}`)
             }
         }else{
             toast.error(`${res.config?.url} ${res.message}`)
         }
-    }, [navigate, setUserRoleList])
+    }, [navigate])
 
     useEffect(() => {
-        fetchUser()
-    }, [fetchUser])
+        fetchUserRole()
+    }, [fetchUserRole])
 
 
     const handleEditData =  (selectedData) => {
@@ -65,23 +63,24 @@ const UserRole = ({user, userRole, setUserRoleList}) => {
         
         let res = null
         if(!isUpdate){
-            data.created_by_var = user.fullname_var
             res = await createNewUserGroup(data)
         }else{
-            data.updated_by_var = user.fullname_var
-            res = await updateUserGroup(selectedUser.id_seq, data)
+            res = await updateUserGroup(selectedUser.i_id, data)
         }
 
         console.log('Create/Update User Group :', res)
-        
+        showLoader(false)
         if(res.data){
-            if(res.data.code === 0){
+            if(res.data.status === '00'){
                 toast.success(res.data.message)
-                fetchUser()
+                fetchUserRole()
                 resetForm()
             }else{
-                toast.error(res.data.message)
-                showLoader(false)
+                if(res.data.message){
+                    toast.error(res.data.message)
+                }else{
+                    toast.error(`${res.config?.url} ${res.status} ${res.statusText}`)
+                }
             }
         }else{
             toast.error(`${res.config?.url} ${res.message}`)
@@ -89,15 +88,19 @@ const UserRole = ({user, userRole, setUserRoleList}) => {
     }
 
     const handleDeleteItem = async (data) => {
-        const res = await deleteUserGroup(data.id_seq)
+        const res = await deleteUserGroup(data.i_id)
 
         console.log("DELETE USER Group :", res)
         if(res.data){
-            if(res.data.code === 0){
+            if(res.data.status === '00'){
                 toast.success(res.data.message)
-                fetchUser()
+                fetchUserRole()
             }else{
-                toast.error(res.data.message)
+                if(res.data.message){
+                    toast.error(res.data.message)
+                }else{
+                    toast.error(`${res.config?.url} ${res.status} ${res.statusText}`)
+                }
             }
         }else{
             toast.error(`${res.config?.url} ${res.message}`)
@@ -115,15 +118,20 @@ const UserRole = ({user, userRole, setUserRoleList}) => {
         {
             Header: () => <span className='p-4'>Role Name</span>,
             Footer: 'Role Name',
-            accessor: 'group_name_var',
+            accessor: 'n_group',
             Cell: ({ value }) =>  <div className='text-left pl-4'>{value}</div>,
+        },
+        {
+            Header: 'Description',
+            Footer: 'Description',
+            accessor: 'e_desc',
         },
         {
             Header: 'Status',
             Footer: 'Status',
-            accessor: 'status_int',
+            accessor: 'b_active',
             Cell: ({value}) => (
-                parseInt(value)===1? 
+                value? 
                 <span className='bg-green-100 text-green-800 px-2 py-1 rounded-lg font-semibold'>Active</span>
                 :
                 <span className='bg-red-100 text-red-800 px-2 py-1 rounded-lg font-semibold'>Inactive</span>
@@ -150,7 +158,8 @@ const UserRole = ({user, userRole, setUserRoleList}) => {
             console.log(event.target.value)
             const filtered = newData.filter(item => {
                 return (
-                    item.group_name_var.toLowerCase().includes(event.target.value.toLowerCase())
+                    item.n_group.toLowerCase().includes(event.target.value.toLowerCase()) ||
+                    item.e_desc.toLowerCase().includes(event.target.value.toLowerCase())
                 )
             });
 

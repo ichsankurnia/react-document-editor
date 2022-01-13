@@ -2,28 +2,47 @@ import { useNavigate } from "react-router-dom"
 import { useCallback, useEffect, useState } from "react"
 import { connect } from "react-redux"
 
-import { createNewUser, disableUser, getAllUser, updateUser } from "../../api/user-api"
+import { createNewUser, deleteUser, getAllUser, getAllUserGroup, updateUser } from "../../api/user-api"
 
 import TableFull from "../../component/table/TableFull"
 import Loader from "../../component/modal/Loader"
-import { ModalFormUser } from "../../component/modal/ModalFormUser"
 import { ButtonAdd } from "../../component/button/CustomButton"
 import DropdownActionUser from "../../component/dropdown/DropdownActionUser"
 import ModalFormChangePassword from "../../component/modal/ModalFormChangePassword"
+import ModalFormUser from "../../component/modal/ModalFormUser"
 import SearchField from "../../component/textfield/SearchField"
 import { toast } from "react-toastify"
 
-const User = ({user, userRole}) => {
+const User = ({user}) => {
     const [loader, showLoader] = useState(false)
     const [modalUser, showModalUser] = useState(false)
     const [isUpdate, setIsUpdate] = useState(false)
     const [modalChangePass, showModalChangePass] = useState()
     const [dataUser, setDataUser] = useState([])
+    const [dataRole, setDataRole] = useState([])
     const [filterData, setFilterData] = useState([])
     const [selectedUser, setSelectedUser] = useState(null)
 
     const navigate = useNavigate()
-    const userGroupList = userRole.length > 0? userRole : JSON.parse(localStorage.getItem('doc-role'))
+
+    useEffect(() => {
+        async function fetchUserRole() {
+            const res = await getAllUserGroup(localStorage.getItem('doc-token'))
+    
+            console.log('Fetch User Group :', res)
+            if(res.data){
+                if(res.data.status === '00'){
+                    setDataRole(res.data.data.filter(data => data.b_active))
+                }else{
+                    toast.error(`${res.config?.url} ${res.status} ${res.statusText}`)
+                }
+            }else{
+                toast.error(`${res.config?.url} ${res.message}`)
+            }
+        }
+
+        fetchUserRole()
+    }, [])
 
     const fetchUser = useCallback( async () => {
         showLoader(true)
@@ -32,15 +51,18 @@ const User = ({user, userRole}) => {
         showLoader(false)
         console.log('Fetch User :', res)
         if(res.data){
-            if(res.data.code === 0){
+            if(res.data.status === '00'){
                 setDataUser(res.data.data)
                 setFilterData(res.data.data)
-            }
-            // else if(res.data.code === 99){
-            //     navigate('/auth')
-            // }
-            else{
-                toast.error(res.data.message)
+            }else if(res.data.status === '01'){
+                toast.info('Session expired, please login!')
+                navigate('/auth')
+            }else{
+                if(res.data.message){
+                    toast.error(res.data.message)
+                }else{
+                    toast.error(`${res.config?.url} ${res.status} ${res.statusText}`)
+                }
             }
         }else{
             toast.error(`${res.config?.url} ${res.message}`)
@@ -53,6 +75,7 @@ const User = ({user, userRole}) => {
 
 
     const handleEditData =  (selectedData) => {
+        console.log(selectedData)
         setSelectedUser(selectedData)
         setIsUpdate(true)
         showModalUser(true)
@@ -69,23 +92,24 @@ const User = ({user, userRole}) => {
         
         let res = null
         if(!isUpdate){
-            data.created_by_var = user.fullname_var
             res = await createNewUser(data)
         }else{
-            data.updated_by_var = user.fullname_var
-            res = await updateUser(selectedUser.id_seq, data)
+            res = await updateUser(selectedUser.i_id, data)
         }
 
         console.log('Create/Update User :', res)
-        
+        showLoader(false)
         if(res.data){
-            if(res.data.code === 0){
+            if(res.data.status === '00'){
                 toast.success(res.data.message)
                 fetchUser()
                 resetForm()
             }else{
-                toast.error(res.data.message)
-                showLoader(false)
+                if(res.data.message){
+                    toast.error(res.data.message)
+                }else{
+                    toast.error(`${res.config?.url} ${res.status} ${res.statusText}`)
+                }
             }
         }else{
             toast.error(`${res.config?.url} ${res.message}`)
@@ -93,15 +117,20 @@ const User = ({user, userRole}) => {
     }
 
     const handleDeleteItem = async (data) => {
-        const res = await disableUser(data.id_seq)
+        const res = await deleteUser(data.i_id)
 
         console.log("DELETE USER :", res)
+        showLoader(false)
         if(res.data){
-            if(res.data.code === 0){
+            if(res.data.status === '00'){
                 toast.success(res.data.message)
                 fetchUser()
             }else{
-                toast.error(res.data.message)
+                if(res.data.message){
+                    toast.error(res.data.message)
+                }else{
+                    toast.error(`${res.config?.url} ${res.status} ${res.statusText}`)
+                }
             }
         }else{
             toast.error(`${res.config?.url} ${res.message}`)
@@ -120,25 +149,30 @@ const User = ({user, userRole}) => {
         {
             Header: () => <span className='p-4'>Name</span>,
             Footer: 'Name',
-            accessor: 'fullname_var',
+            accessor: 'e_fullname',
             Cell: ({ value }) =>  <div className='text-left pl-4'>{value}</div>,
+        },
+        {
+            Header: 'Username',
+            Footer: 'Username',
+            accessor: 'n_username',
         },
         {
             Header: 'Phone Number',
             Footer: 'Phone Number',
-            accessor: 'phone_number_int',
+            accessor: 'e_phone_number',
         },
         {
             Header: 'Email',
             Footer: 'Email',
-            accessor: 'email_var'
+            accessor: 'e_email'
         },
         {
             Header: 'Status',
             Footer: 'Status',
-            accessor: 'status_int',
+            accessor: 'b_active',
             Cell: ({value}) => (
-                parseInt(value)===1? 
+                value? 
                 <span className='bg-green-100 text-green-800 px-2 py-1 rounded-lg font-semibold'>Active</span>
                 :
                 <span className='bg-red-100 text-red-800 px-2 py-1 rounded-lg font-semibold'>Inactive</span>
@@ -147,18 +181,15 @@ const User = ({user, userRole}) => {
         {
             Header: 'Role',
             Footer: 'Role',
-            accessor: 'user_group_id_int',
-            Cell: ({ value }) => {
-                return userGroupList.find(data => data.id_seq === value)?.group_name_var
-            }
+            accessor: 'n_group'
         },
         {
             Header: 'Action',
             Footer: 'Action',
             Cell: ({row}) => {
                 const data = row.original
-                if(user?.user_group_id_int === 1){
-                    if(data.user_group_id_int !== 1){
+                if(user?.i_group === 1){
+                    if(data.i_group !== 1){
                         return <DropdownActionUser
                             onEdit={() => handleEditData(data)}
                             onChangePassword={()=>handleChangePassword(data)}
@@ -166,7 +197,7 @@ const User = ({user, userRole}) => {
                         />
                     }
                 }else{
-                    if(data.user_group_id_int !== 1 && data.user_group_id_int !== 2){
+                    if(data.i_group !== 1 && data.i_group !== 2){
                         return <DropdownActionUser
                                 onEdit={() => handleEditData(data)}
                                 onChangePassword={()=>handleChangePassword(data)}
@@ -187,9 +218,10 @@ const User = ({user, userRole}) => {
         if(event.target.value){
             const filtered = newData.filter(item => {
                 return (
-                    item.fullname_var.toLowerCase().includes(event.target.value.toLowerCase()) ||
-                    item.phone_number_int.toLowerCase().includes(event.target.value.toLowerCase()) || 
-                    item.email_var?.toLowerCase().includes(event.target.value.toLowerCase())
+                    item.e_fullname.toLowerCase().includes(event.target.value.toLowerCase()) ||
+                    item.n_username.toLowerCase().includes(event.target.value.toLowerCase()) || 
+                    item.e_phone_number.toLowerCase().includes(event.target.value.toLowerCase()) || 
+                    item.e_email?.toLowerCase().includes(event.target.value.toLowerCase())
                 )
             });
 
@@ -213,7 +245,7 @@ const User = ({user, userRole}) => {
                     </div>
                     <div className='flex flex-col'>
                         <h1 className='font-semibold text-3xl mb-1'>{dataUser?.length}</h1>
-                        <p>Total</p>
+                        <p>Total User</p>
                     </div>
                 </div>
                 <div className='w-full md:w-4/12 mb-5 md:mb-0 md:mr-6 flex justify-evenly items-center bg-white rounded-2xl shadow-xl px-5 py-8'>
@@ -221,7 +253,7 @@ const User = ({user, userRole}) => {
                         <i className="ri-user-follow-fill"></i>
                     </div>
                     <div className='flex flex-col'>
-                        <h1 className='font-semibold text-3xl mb-1'>{dataUser?.filter(data => data.status_int === 1).length}</h1>
+                        <h1 className='font-semibold text-3xl mb-1'>{dataUser?.filter(data => data.b_active).length}</h1>
                         <p>Active User</p>
                     </div>
                 </div>
@@ -230,7 +262,7 @@ const User = ({user, userRole}) => {
                         <i className="ri-user-unfollow-fill"></i>
                     </div>
                     <div className='flex flex-col'>
-                        <h1 className='font-semibold text-3xl mb-1'>{dataUser?.filter(data => data.status_int !== 1).length}</h1>
+                        <h1 className='font-semibold text-3xl mb-1'>{dataUser?.filter(data => !data.b_active).length}</h1>
                         <p>Inactive User</p>
                     </div>
                 </div>
@@ -239,8 +271,8 @@ const User = ({user, userRole}) => {
                         <i className="ri-user-5-fill"></i>
                     </div>
                     <div className='flex flex-col'>
-                        <h1 className='font-semibold text-3xl mb-1'>{dataUser?.filter(data => data.user_group_id_int === 3).length}</h1>
-                        <p>Total User</p>
+                        <h1 className='font-semibold text-3xl mb-1'>{dataUser?.filter(data => data.i_group === 2).length}</h1>
+                        <p>Employee</p>
                     </div>
                 </div>
             </div>
@@ -259,7 +291,8 @@ const User = ({user, userRole}) => {
 
             </div>
 
-            {modalUser && <ModalFormUser 
+            {modalUser && <ModalFormUser
+                userRoleList={dataRole} 
                 data={selectedUser}
                 onCancel={resetForm}
                 onSubmit={handleReceiveDataForm}

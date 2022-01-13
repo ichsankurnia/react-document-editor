@@ -1,8 +1,18 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { bindActionCreators } from "redux";
+import { authLogin } from "../../api/common-api";
 import ErrorField from "../../component/ErrorField";
+import Loader from "../../component/modal/Loader";
+import { setUserData } from "../../reduxs/action/actions";
 
-const Login = () => {
+
+const Login = ({setUserData}) => {
+    const [loader, showLoader] = useState(false)
+
     const navigate = useNavigate()
 
     const {
@@ -11,8 +21,28 @@ const Login = () => {
         handleSubmit
     } = useForm({ criteriaMode: "all" });
 
-    const onValidForm = (payload) => {
-        navigate('/dashboard', {replace: true})
+    const onValidForm = async (dataForm) => {
+        showLoader(true)
+
+        const res = await authLogin(dataForm)
+        console.log('Login :', res)
+        if(res.data){
+            if(res.data.status === '00'){
+                const dataUser = {...res.data.data}
+                delete dataUser.token
+
+                setUserData(dataUser)
+                localStorage.setItem('doc-user', JSON.stringify(dataUser))
+                localStorage.setItem('doc-token', res.data.data.token)
+                navigate('/dashboard', {replace: true})
+            }else{
+                toast.error(res.data.message)
+                showLoader(false)
+            }
+        }else{
+            toast.error(res.config.baseURL + ' ' + res.message)
+            showLoader(false)
+        }
     }
 
     return (
@@ -29,25 +59,10 @@ const Login = () => {
                         <div className="divide-y divide-gray-200">
                             <div className="py-8 leading-6 space-y-4 text-gray-700 md:text-sms sm:leading-7">
                                 <div className="relative">
-                                    <input autoComplete="off" id="phone_number" name="phone_number" type="tel" className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Phone Number" 
-                                    {...register("phone_number", {
-                                            required: "Phone number is required.",
-                                            pattern: {
-                                                value: /^\d+$/,
-                                                message: "Phone number is number only."
-                                            },
-                                            minLength: {
-                                                value: 10,
-                                                message: "Phone number must exceed 9 characters."
-                                            },
-                                            maxLength: {
-                                                value: 14,
-                                                message: "Phone number invalid."
-                                            }
-                                        })}
-                                    />
-                                    <ErrorField errors={errors} name="phone_number" />
-                                    <label htmlFor="phone_number" className="absolute left-0 -top-3.5 text-gray-600 text-sms peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sms">Phone Number</label>
+                                    <input autoComplete="off" id="username" name="username" type="tel" className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Username" 
+                                    {...register("username", { required: "Username is required." })}/>
+                                    <ErrorField errors={errors} name="username" />
+                                    <label htmlFor="username" className="absolute left-0 -top-3.5 text-gray-600 text-sms peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sms">Username</label>
                                 </div>
                                 <div className="relative">
                                     <input autoComplete="off" id="password" name="password" type="password" className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Password" 
@@ -71,17 +86,23 @@ const Login = () => {
                 </form>
             </div>
             <div className='flex flex-col items-center text-sms mt-7'>
-                <div className='mb-3'>Don't have an account ? {' '}
+                {/* <div className='mb-3'>Don't have an account ? {' '}
                     <span className='text-red-800 hover:text-red-600 font-medium'>
                         <Link to='/auth/sign-up'>
                             Sign Up
                         </Link>
                     </span>
-                </div>
+                </div> */}
                 <p>© {new Date().getFullYear()} CompanyName v1.0</p>
             </div>
+
+            {loader && <Loader />}
         </div>
     )
 }
 
-export default Login
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({setUserData}, dispatch)
+}
+
+export default connect(null, mapDispatchToProps)(Login)

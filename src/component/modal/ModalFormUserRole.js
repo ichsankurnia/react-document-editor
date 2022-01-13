@@ -27,10 +27,11 @@ const ModalFormUserRole = ({data, onCancel, onSubmit}) => {
     }, [data, setdefaultValue])
     
     const onValid = (dataForm) => {
-        const { group_name_var} = dataForm
+        const { n_group, e_desc} = dataForm
 
         const payload = {
-            group_name_var: group_name_var?.toUpperCase()
+            n_group: n_group?.toUpperCase(),
+            e_desc: e_desc
         }
 
         onSubmit(payload)
@@ -41,19 +42,21 @@ const ModalFormUserRole = ({data, onCancel, onSubmit}) => {
             <div className="absolute w-full h-full bg-gray-900 opacity-60" onClick={onCancel}></div>
 
             {/* Modal Content */}
-            <div className="bg-soft w-10/12 md:w-2/5 mx-auto my-auto p-6 rounded-xl shadow-2xl z-50 overflow-y-auto" style={{ maxHeight: '90vh'}}>
+            <div className="bg-soft w-10/12 md:w-3/5 mx-auto my-auto p-6 rounded-xl shadow-2xl z-50 overflow-y-auto" style={{ maxHeight: '90vh'}}>
                 {/* Body */}
                 <h1 className='text-base font-medium mb-8 sticky inset-0'>{data? 'Form Update Role': 'Form Add Role'}</h1>
                 <form onSubmit={handleSubmit(onValid)}>
                     <div className='flex flex-col sm:flex-row'>
                         <div className={containerInput}>
                             <label>Role Name</label>
-                            <input type='text' className={inputText} placeholder='ADMINISTRATOR'
-                                {...register("group_name_var", {
-                                    required: "Role Name is required.",
-                                })}
-                            />
-                            <ErrorField errors={errors} name='group_name_var' />
+                            <input type='text' className={inputText} placeholder='ADMINISTRATOR' {...register("n_group", { required: "Role Name is required."})}/>
+                            <ErrorField errors={errors} name='n_group' />
+                        </div>
+                        <span className='mx-5 mb-3 sm:mb-0'></span>
+                        <div className={containerInput}>
+                            <label>Role Description</label>
+                            <input type='text' className={inputText} placeholder='Description...' {...register("e_desc", { required: "Description is required."})}/>
+                            <ErrorField errors={errors} name='e_desc' />
                         </div>
                     </div>
                     
