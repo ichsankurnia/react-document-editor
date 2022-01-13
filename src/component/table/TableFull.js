@@ -25,7 +25,7 @@ const TableFull = ({ columnTable, dataTable }) => {
                         {headerGroups.map(headerGroup => (
                             <tr {...headerGroup.getHeaderGroupProps()}>
                                 {headerGroup.headers.map(column => (
-                                    <th className={`${columnTable.length>6? 'py-1': 'py-4'} text-center xs:text-left`} {...column.getHeaderProps()}>{column.render('Header')}</th>
+                                    <th className={`${columnTable.length>6? 'py-4': 'py-4'} text-center xs:text-left`} {...column.getHeaderProps()}>{column.render('Header')}</th>
                                 ))}
                             </tr>
                         ))}

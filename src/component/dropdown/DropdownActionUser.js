@@ -42,22 +42,22 @@ const DropdownActionUser = ({onEdit, onChangePassword, onDelete}) => {
     return (
         <div className="relative inline-flex justify-center item-center flex-row-reverse">
             <button onClick={() => setDropdownOpen(!dropdownOpen)} className="relative z-5 block rounded-md focus:outline-none cursor-pointer">
-                <span className='text-gray-500 text-lg hover:text-agroo5'><i className="ri-more-fill"></i> </span>
+                <span className='text-gray-700 hover:text-red-800'><i className="ri-more-fill text-xl font-bold"></i> </span>
             </button>
 
             {dropdownOpen &&
             <div className={`mr-1 md:m-0 md:absolute right-7 -bottom-13 bg-white rounded-md shadow-lg overflow-hidden p-1 border-1 border-gray-200`}>
                 <div ref={dropdown} onFocus={() => setDropdownOpen(true)} onBlur={() => setDropdownOpen(false)} >
-                    <div className="flex flex-col w-40">
-                        <button onClick={handleEdit} className="px-2 py-2 text-sm text-gray-700 hover:bg-agroo5 hover:text-white inline-flex rounded-md">
+                    <div className="flex flex-col w-40 min-w-max text-left">
+                        <button onClick={handleEdit} className="px-2 py-2 text-sm text-gray-700 hover:bg-red-800 hover:text-white inline-flex rounded-md items-center">
                             <i className='ri-edit-box-fill mr-3 mt-0.5' />
                             <p>Edit</p>
                         </button>
-                        <button onClick={onChangePassword} className="px-2 py-2 text-sm text-gray-700 hover:bg-agroo5 hover:text-white inline-flex rounded-md">
+                        <button onClick={onChangePassword} className="px-2 py-2 text-sm text-gray-700 hover:bg-red-800 hover:text-white inline-flex rounded-md items-center text-left">
                             <i className='ri-key-fill mr-3 mt-0.5' />
                             <p>Change Password</p>
                         </button>
-                        <button onClick={() => showConfirmDelete(true)} className="mt-1 px-2 py-2 text-sm text-gray-700 hover:bg-agroo5 hover:text-white inline-flex rounded-md">
+                        <button onClick={() => showConfirmDelete(true)} className="mt-1 px-2 py-2 text-sm text-gray-700 hover:bg-red-800 hover:text-white inline-flex rounded-md items-center">
                             <i className='ri-delete-bin-5-fill mr-3 mt-0.5' />
                             <p>Delete</p>
                         </button>
