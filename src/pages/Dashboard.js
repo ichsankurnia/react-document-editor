@@ -1,12 +1,37 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import jwtDecode from "jwt-decode";
+import { useEffect } from "react";
+import { connect } from "react-redux";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { bindActionCreators } from "redux";
 import Header from "../component/Header";
 import Sidebar from "../component/Sidebar";
 import NotFoundContainer from "../container/NotFoundContainer";
+import { setUserData } from "../reduxs/action/actions";
 
 import { DashboardRoutes } from "../route";
 
 
-function Dashboard() {
+function Dashboard({setUserData}) {
+
+	const navigate = useNavigate()
+
+	useEffect(()=>{
+		const token = localStorage.getItem('doc-token')
+		if(!token){
+			localStorage.clear()
+			navigate('/auth', {replace: true})
+		}else{
+			const decode = jwtDecode(token)
+			const currentTime = Date.now() / 1000;
+			
+			if(decode.exp < currentTime){
+				localStorage.clear()
+				navigate('/auth', {replace: true})
+			}else{
+				setUserData(JSON.parse(localStorage.getItem('doc-user')))
+			}
+		}
+	}, [navigate, setUserData])
 
     // MAIN ROUTE
 	const getRoutes = () => {
@@ -48,5 +73,9 @@ function Dashboard() {
 	);
 }
 
+const mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({setUserData}, dispatch)
+}
 
-export default Dashboard
+
+export default connect(null, mapDispatchToProps)(Dashboard)
