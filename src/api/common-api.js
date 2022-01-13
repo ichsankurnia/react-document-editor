@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // export const baseURL = "http://localhost:2299"                          // Local
-export const baseURL = 'http://103.77.107.140:2299'
+export const baseURL = 'http://100.104.216.52:9000/api/v1'
 
 const api = axios.create({
     baseURL: baseURL,
@@ -14,7 +14,7 @@ const api = axios.create({
 
 export const authLogin = async (payload) => {
     try {
-        const data = await api.post('/api/login', payload)
+        const data = await api.post('/login', payload)
         return data
     } catch (error) {
         if(error.response) return error.response
@@ -24,7 +24,7 @@ export const authLogin = async (payload) => {
 
 export const authRegister = async (payload) => {
     try {
-        const data = await api.post('/api/register', payload)
+        const data = await api.post('/register', payload)
         return data
     } catch (error) {
         if(error.response) return error.response
@@ -34,7 +34,7 @@ export const authRegister = async (payload) => {
 
 export const authValidateOTP = async (payload) => {
     try {
-        const data = await api.post('/api/otp-validate', payload)
+        const data = await api.post('/otp-validate', payload)
         return data
     } catch (error) {
         if(error.response) return error.response
@@ -42,65 +42,5 @@ export const authValidateOTP = async (payload) => {
     }
 }
 
-
-export const getProvince = async () => {
-    try {
-        const {data} = await axios.get(baseURL + '/api/location/prov-all')
-        return data
-    } catch (error) {
-        if(error.response) return error.response
-        else return JSON.parse(JSON.stringify(error))  
-    }
-}
-
-export const getCities = async (provID) => {
-    try {
-        const {data} = await axios.get(baseURL + '/api/location/city-prov?prov_id' + provID )
-        return data
-    } catch (error) {
-        if(error.response) return error.response
-        else return JSON.parse(JSON.stringify(error))  
-    }
-}
-
-export const getAllCities = async () => {
-    try {
-        const {data} = await axios.get(baseURL + '/api/location/city-all')
-        return data
-    } catch (error) {
-        if(error.response) return error.response
-        else return JSON.parse(JSON.stringify(error))  
-    }
-}
-
-export const getDistricts = async (cistyID) => {
-    try {
-        const {data} = await axios.get(baseURL + '/api/location/dis-city?city_id' + cistyID )
-        return data
-    } catch (error) {
-        if(error.response) return error.response
-        else return JSON.parse(JSON.stringify(error))  
-    }
-}
-
-export const getAllDistricts = async () => {
-    try {
-        const {data} = await axios.get(baseURL + '/api/location/dis-all')
-        return data
-    } catch (error) {
-        if(error.response) return error.response
-        else return JSON.parse(JSON.stringify(error))  
-    }
-}
-
-export const getAllLocation = async () => {
-    try {
-        const {data} = await axios.get(baseURL + '/api/location/all')
-        return data
-    } catch (error) {
-        if(error.response) return error.response
-        else return JSON.parse(JSON.stringify(error))  
-    }
-}
 
 export default api

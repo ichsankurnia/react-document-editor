@@ -3,7 +3,7 @@ import { baseURL } from './common-api'
 
 export const getAllProject = async () => {
     try {
-        const data = await axios.get(baseURL + '/api/project/get-all', {
+        const data = await axios.get(baseURL + '/project/get-all', {
             headers: {
                 authorization: `Bearer ${localStorage.getItem("agroo-token")}`,
                 Accept: "application/json",
@@ -19,7 +19,7 @@ export const getAllProject = async () => {
 
 export const createNewProject = async (payload) => {
     try {
-        const data = await axios.post(baseURL + '/api/project/create', payload, {
+        const data = await axios.post(baseURL + '/project/create', payload, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem("agroo-token")}`,
                 Accept: "application/json",
@@ -35,7 +35,7 @@ export const createNewProject = async (payload) => {
 
 export const updateProject = async (projectID, payload) => {
     try {
-        const data = await axios.patch(baseURL + '/api/project/update/' + projectID, payload, {
+        const data = await axios.patch(baseURL + '/project/update/' + projectID, payload, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem("agroo-token")}`,
                 Accept: "application/json",
@@ -51,7 +51,7 @@ export const updateProject = async (projectID, payload) => {
 
 export const deleteProject = async (projectID) => {
     try {
-        const data = await axios.delete(baseURL + '/api/project/delete/' + projectID, {
+        const data = await axios.delete(baseURL + '/project/delete/' + projectID, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem("agroo-token")}`,
                 Accept: "application/json",
