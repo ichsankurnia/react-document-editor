@@ -3,25 +3,10 @@ import { baseURL } from "./common-api"
 
 // USER
 //#region 
-export const getOneUser = async (token, phoneNumber) => {
-    try {
-        const data = await axios.get(`${baseURL}/api/user/get-one?phone_number_int=${phoneNumber}`, {
-            headers: {
-                authorization: `Bearer ${token}`,
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            }
-        })
-        return data
-    } catch (error) {
-        if(error.response) return error.response
-        else return JSON.parse(JSON.stringify(error))  
-    }
-}
 
 export const getOneUserByID = async (token, userID) => {
     try {
-        const data = await axios.get(`${baseURL}/api/user/get-one?id_seq=${userID}`, {
+        const data = await axios.get(`${baseURL}/user/${userID}`, {
             headers: {
                 authorization: `Bearer ${token}`,
                 Accept: "application/json",
@@ -37,7 +22,7 @@ export const getOneUserByID = async (token, userID) => {
 
 export const getAllUser = async (token) => {
     try {
-        const data = await axios.get(baseURL + '/api/user/get-all', {
+        const data = await axios.get(baseURL + '/user', {
             headers: {
                 authorization: `Bearer ${token}`,
                 Accept: "application/json",
@@ -53,9 +38,9 @@ export const getAllUser = async (token) => {
 
 export const createNewUser = async (payload) => {
     try {
-        const data = await axios.post(baseURL + '/api/user/create', payload, {
+        const data = await axios.post(baseURL + '/user/create', payload, {
             headers: {
-                authorization: `Bearer ${localStorage.getItem("ties-token")}`,
+                authorization: `Bearer ${localStorage.getItem("doc-token")}`,
                 Accept: "application/json",
                 "Content-Type": "application/json"
             }
@@ -70,9 +55,9 @@ export const createNewUser = async (payload) => {
 
 export const updateUser = async (userID, payload) => {
     try {
-        const data = await axios.patch(baseURL + '/api/user/update/' + userID, payload, {
+        const data = await axios.put(baseURL + '/user/' + userID, payload, {
             headers: {
-                authorization: `Bearer ${localStorage.getItem("ties-token")}`,
+                authorization: `Bearer ${localStorage.getItem("doc-token")}`,
                 Accept: "application/json",
                 "Content-Type": "application/json"
             }
@@ -86,9 +71,9 @@ export const updateUser = async (userID, payload) => {
 
 export const deleteUser = async (userID) => {
     try {
-        const data = await axios.delete(baseURL + '/api/user/delete/' + userID, {
+        const data = await axios.delete(baseURL + '/user/' + userID, {
             headers: {
-                authorization: `Bearer ${localStorage.getItem("ties-token")}`,
+                authorization: `Bearer ${localStorage.getItem("doc-token")}`,
                 Accept: "application/json",
                 "Content-Type": "application/json"
             }
@@ -102,9 +87,9 @@ export const deleteUser = async (userID) => {
 
 export const disableUser = async (userID) => {
     try {
-        const data = await axios.delete(baseURL + '/api/user/disable/' + userID, {
+        const data = await axios.delete(baseURL + '/user/disable/' + userID, {
             headers: {
-                authorization: `Bearer ${localStorage.getItem("ties-token")}`,
+                authorization: `Bearer ${localStorage.getItem("doc-token")}`,
                 Accept: "application/json",
                 "Content-Type": "application/json"
             }
@@ -121,7 +106,7 @@ export const getMenu = async (token, userGroupID) => {
         const payload = {
             user_group_id_int: userGroupID
         }
-        const data = await axios.post(`${baseURL}/api/login/menu`, payload, {
+        const data = await axios.post(`${baseURL}/login/menu`, payload, {
             headers: {
                 authorization: `Bearer ${token}`,
                 Accept: "application/json",
@@ -141,7 +126,7 @@ export const getMenu = async (token, userGroupID) => {
 //#region 
 export const getOneUserGroup = async (token, idSeq) => {
     try {
-        const data = await axios.get(`${baseURL}/api/usergroup/get-one?id_seq=${idSeq}`, {
+        const data = await axios.get(`${baseURL}/role/${idSeq}`, {
             headers: {
                 authorization: `Bearer ${token}`,
                 Accept: "application/json",
@@ -157,7 +142,7 @@ export const getOneUserGroup = async (token, idSeq) => {
 
 export const getAllUserGroup = async (token) => {
     try {
-        const data = await axios.get(baseURL + '/api/usergroup/get-all', {
+        const data = await axios.get(baseURL + '/role', {
             headers: {
                 authorization: `Bearer ${token}`,
                 Accept: "application/json",
@@ -173,9 +158,9 @@ export const getAllUserGroup = async (token) => {
 
 export const createNewUserGroup = async (payload) => {
     try {
-        const data = await axios.post(baseURL + '/api/usergroup/create', payload, {
+        const data = await axios.post(baseURL + '/role/create', payload, {
             headers: {
-                authorization: `Bearer ${localStorage.getItem("ties-token")}`,
+                authorization: `Bearer ${localStorage.getItem("doc-token")}`,
                 Accept: "application/json",
                 "Content-Type": "application/json"
             }
@@ -190,9 +175,9 @@ export const createNewUserGroup = async (payload) => {
 
 export const updateUserGroup = async (idSeq, payload) => {
     try {
-        const data = await axios.patch(baseURL + '/api/usergroup/update/' + idSeq, payload, {
+        const data = await axios.put(baseURL + '/role/' + idSeq, payload, {
             headers: {
-                authorization: `Bearer ${localStorage.getItem("ties-token")}`,
+                authorization: `Bearer ${localStorage.getItem("doc-token")}`,
                 Accept: "application/json",
                 "Content-Type": "application/json"
             }
@@ -206,9 +191,9 @@ export const updateUserGroup = async (idSeq, payload) => {
 
 export const deleteUserGroup = async (idSeq) => {
     try {
-        const data = await axios.delete(baseURL + '/api/usergroup/delete/' + idSeq, {
+        const data = await axios.delete(baseURL + '/role/' + idSeq, {
             headers: {
-                authorization: `Bearer ${localStorage.getItem("ties-token")}`,
+                authorization: `Bearer ${localStorage.getItem("doc-token")}`,
                 Accept: "application/json",
                 "Content-Type": "application/json"
             }
