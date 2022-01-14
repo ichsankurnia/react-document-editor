@@ -16,16 +16,16 @@ const ModalFormChangePassword = ({onCancel, onSubmit}) => {
     } = useForm({ criteriaMode: "all" });
     
     const onValid = (dataForm) => {
-        const { password_var, confirm_pass} = dataForm
+        const { e_password, confirm_pass} = dataForm
         
         /* Password Feld hanya muncul ketika add user dan user role selain petani */
-        if(password_var !== confirm_pass){
+        if(e_password !== confirm_pass){
             showErrPas(true)
             return
         }
 
         const payload = {
-            password_var: password_var
+            e_password: e_password
         }
 
         onSubmit(payload)
@@ -38,18 +38,18 @@ const ModalFormChangePassword = ({onCancel, onSubmit}) => {
             {/* Modal Content */}
             <div className="bg-soft w-10/12 md:w-3/5 mx-auto my-auto p-6 rounded-xl shadow-2xl z-50 overflow-y-auto" style={{ maxHeight: '90vh'}}>
                 {/* Body */}
-                <h1 className='text-base font-medium mb-8 sticky inset-0'>Form Ganti Password</h1>
+                <h1 className='text-base font-medium mb-8 sticky inset-0'>Form Change Password</h1>
                 <form onSubmit={handleSubmit(onValid)}>
                     <div className='flex flex-col sm:flex-row'>
                         <div className={containerInput}>
                             <label>Password</label>
                             <input type='password' className={inputText} placeholder='*****'
-                                {...register("password_var", {
+                                {...register("e_password", {
                                     required: "Password is required.",
                                     minLength: { value: 5, message: "Password must exceed 4 characters."}
                                 })}
                             />
-                            <ErrorField errors={errors} name='password_var' />
+                            <ErrorField errors={errors} name='e_password' />
                         </div>
                         <span className='mx-5 mb-3 sm:mb-0'></span>
                         <div className={containerInput}>

@@ -66,7 +66,7 @@ const ModalFormUser = ({userRoleList, data, onCancel, onSubmit}) => {
             {/* Modal Content */}
             <div className="bg-soft w-10/12 md:w-3/5 mx-auto my-auto p-6 rounded-xl shadow-2xl z-50 overflow-y-auto" style={{ maxHeight: '90vh'}}>
                 {/* Body */}
-                <h1 className='text-base font-medium mb-8 sticky inset-0'>{data?'Form Ubah User':'Form Tambah User Baru' }</h1>
+                <h1 className='text-base font-medium mb-8 sticky inset-0'>{data?'Form Update User':'Form Create New User' }</h1>
                 <form onSubmit={handleSubmit(onValid)}>
                     <div className='flex flex-col sm:flex-row mb-3'>
                         <div className={containerInput}>
@@ -90,7 +90,7 @@ const ModalFormUser = ({userRoleList, data, onCancel, onSubmit}) => {
                         <span className='mx-5 mb-3 sm:mb-0'></span>
                         <div className={containerInput}>
                             <label>Username</label>
-                            <input type='text' className={inputText} placeholder='Username...' {...register("n_username", { required: "Username is required."})}/>
+                            <input type='text' className={inputText} readOnly={data?true:false} placeholder='Username...' {...register("n_username", { required: "Username is required."})}/>
                             <ErrorField errors={errors} name='n_username' />
                         </div>
                     </div>

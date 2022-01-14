@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import ModalConfirm from "../modal/ModalConfirm";
 
 
-const DropdownActionUser = ({onEdit, onChangePassword, onDelete}) => {
+const DropdownActionUser = ({onEdit, onChangePassword, onDelete, titleActive, onActive}) => {
     const [dropdownOpen, setDropdownOpen] = useState(false)
+    const [confirmActive, showConfirmActive] = useState(false)
     const [confirmDelete, showConfirmDelete] = useState(false)
 
     const trigger = useRef(null);
@@ -39,6 +40,11 @@ const DropdownActionUser = ({onEdit, onChangePassword, onDelete}) => {
         onDelete()
     }
 
+    const handleActivateUser = () => {
+        showConfirmActive(false)
+        onActive()
+    }
+
     return (
         <div className="relative inline-flex justify-center item-center flex-row-reverse">
             <button onClick={() => setDropdownOpen(!dropdownOpen)} className="relative z-5 block rounded-md focus:outline-none cursor-pointer">
@@ -49,6 +55,10 @@ const DropdownActionUser = ({onEdit, onChangePassword, onDelete}) => {
             <div className={`mr-1 md:m-0 md:absolute right-7 -bottom-13 bg-white rounded-md shadow-lg overflow-hidden p-1 border-1 border-gray-200`}>
                 <div ref={dropdown} onFocus={() => setDropdownOpen(true)} onBlur={() => setDropdownOpen(false)} >
                     <div className="flex flex-col w-40 min-w-max text-left">
+                        <button onClick={()=>showConfirmActive(true)} className="px-2 py-2 text-sm text-gray-700 hover:bg-red-800 hover:text-white inline-flex rounded-md items-center">
+                            <i className={`${titleActive==='Activate'? 'ri-user-follow-fill': 'ri-user-unfollow-fill'} mr-3 mt-0.5`} />
+                            <p>{titleActive}</p>
+                        </button>
                         <button onClick={handleEdit} className="px-2 py-2 text-sm text-gray-700 hover:bg-red-800 hover:text-white inline-flex rounded-md items-center">
                             <i className='ri-edit-box-fill mr-3 mt-0.5' />
                             <p>Edit</p>
@@ -67,7 +77,8 @@ const DropdownActionUser = ({onEdit, onChangePassword, onDelete}) => {
             </div>
             }
 
-            {confirmDelete && <ModalConfirm message='Hapus data ini?' onOK={handleDelete} onCancel={() => showConfirmDelete(false)} />}
+            {confirmDelete && <ModalConfirm message='Delete this user?' onOK={handleDelete} onCancel={() => showConfirmDelete(false)} />}
+            {confirmActive && <ModalConfirm message={titleActive==='Activate'?'Activate this user?':'Deactivate this user?'} onOK={handleActivateUser} onCancel={() => showConfirmActive(false)} />}
         </div>
     )
 }

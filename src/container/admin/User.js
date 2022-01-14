@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { useCallback, useEffect, useState } from "react"
 import { connect } from "react-redux"
 
-import { createNewUser, deleteUser, getAllUser, getAllUserGroup, updateUser } from "../../api/user-api"
+import { activateUser, changePasswordUser, createNewUser, deleteUser, getAllUser, getAllUserGroup, updateUser } from "../../api/user-api"
 
 import TableFull from "../../component/table/TableFull"
 import Loader from "../../component/modal/Loader"
@@ -17,6 +17,7 @@ const User = ({user}) => {
     const [loader, showLoader] = useState(false)
     const [modalUser, showModalUser] = useState(false)
     const [isUpdate, setIsUpdate] = useState(false)
+    const [isChangePass, setIsChangePass] = useState(false)
     const [modalChangePass, showModalChangePass] = useState()
     const [dataUser, setDataUser] = useState([])
     const [dataRole, setDataRole] = useState([])
@@ -83,7 +84,7 @@ const User = ({user}) => {
 
     const handleChangePassword = (selectedData) => {
         setSelectedUser(selectedData)
-        setIsUpdate(true)
+        setIsChangePass(true)
         showModalChangePass(true)
     }
 
@@ -91,10 +92,12 @@ const User = ({user}) => {
         showLoader(true)
         
         let res = null
-        if(!isUpdate){
-            res = await createNewUser(data)
-        }else{
+        if(isUpdate){
             res = await updateUser(selectedUser.i_id, data)
+        }else if(isChangePass){
+            res = await changePasswordUser(selectedUser.i_id, data)
+        }else{
+            res = await createNewUser(data)
         }
 
         console.log('Create/Update User :', res)
@@ -137,9 +140,34 @@ const User = ({user}) => {
         }
     }
 
+    const handleActivateUser = async (data) => {
+        const payload = {
+            b_active: data.b_active? false: true
+        }
+        const res = await activateUser(data.i_id, payload)
+
+        console.log("Activate USER :", res)
+        showLoader(false)
+        if(res.data){
+            if(res.data.status === '00'){
+                toast.success(res.data.message)
+                fetchUser()
+            }else{
+                if(res.data.message){
+                    toast.error(res.data.message)
+                }else{
+                    toast.error(`${res.config?.url} ${res.status} ${res.statusText}`)
+                }
+            }
+        }else{
+            toast.error(`${res.config?.url} ${res.message}`)
+        }
+    }
+
     const resetForm = () => {
         setSelectedUser(null)
         setIsUpdate(false)
+        setIsChangePass(false)
         showModalUser(false)
         showModalChangePass(false)
         showLoader(false)
@@ -191,6 +219,8 @@ const User = ({user}) => {
                 if(user?.i_group === 1){
                     if(data.i_group !== 1){
                         return <DropdownActionUser
+                            onActive={()=>handleActivateUser(data)}
+                            titleActive={data.b_active? 'Deactivate': 'Activate'}
                             onEdit={() => handleEditData(data)}
                             onChangePassword={()=>handleChangePassword(data)}
                             onDelete={()=>handleDeleteItem(data)}
