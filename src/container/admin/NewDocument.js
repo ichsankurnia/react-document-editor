@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react"
+import { useState, useCallback, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import Dropzone from 'react-dropzone'
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
@@ -11,6 +11,8 @@ import { bindActionCreators } from "redux";
 
 import { DocumentEditorContainerComponent , WordExport, SfdtExport, Selection, Editor, Toolbar } from '@syncfusion/ej2-react-documenteditor';
 import { onDragEnd } from "../../component/DragDropExample";
+import Loader from "../../component/modal/Loader";
+import axios from "axios";
 
 //Inject require module.
 DocumentEditorContainerComponent.Inject(SfdtExport, Selection, Editor, WordExport, Toolbar);
@@ -40,14 +42,21 @@ const columnsFromBackend = [
 ];
 
 const NewDocument = ({setCollapse}) => {
+    const [loader, showLoader] = useState(false)
     const [editor, showEditor] = useState(false)
     const [documenteditor, setDocumentEditor] = useState(null)
     const [documentUpload, setDocumentUpload] = useState('')
     const [columns, setColumns] = useState(columnsFromBackend);
 
     const navigate = useNavigate()
-
     const dropzoneRef = useRef();
+
+    useEffect(() => {
+        return () => {
+            setCollapse(true)
+        }
+    }, [setCollapse])
+
     const openDialog = () => {
         // Note that the ref is set async,
         // so it might be null at some point 
@@ -113,7 +122,40 @@ const NewDocument = ({setCollapse}) => {
         }
     }
 
-    console.log(columns)
+    const onFileChange = (e) => {
+        if (e.target.files[0]) {
+            showLoader(true)
+            //Get selected file.
+            let file = e.target.files[0];
+            if (file.name.substr(file.name.lastIndexOf('.')) !== '.sfdt') {
+                loadFile(file)
+            }else{
+                documenteditor.documentEditor.open(e.target.files[0])
+            }
+        }
+    }
+
+    const loadFile = (file) => {
+        let ajax = new XMLHttpRequest();
+        ajax.open('POST', 'https://ej2services.syncfusion.com/production/web-services/api/documenteditor/Import', true);
+        ajax.onreadystatechange = () => {
+            if (ajax.readyState === 4) {
+                if (ajax.status === 200 || ajax.status === 304) {
+                    // open SFDT text in document editor
+                    documenteditor.documentEditor.open(ajax.responseText);
+                }
+            }
+            showLoader(false)
+        };
+        let formData = new FormData();
+        formData.append('files', file);
+        ajax.send(formData);
+    }
+
+    const loadFileFromServer = async () => {
+        const res = await axios.get('http://100.104.216.52:9000/static/doc-files/TEMPLATE MOA TEL-U BAHASA INDONESIA.docx')
+        console.log(res)
+    }
 
     return (
         <div className='flex item-center flex-col py-5 px-3 md:p-6 mb-auto'>
@@ -121,7 +163,7 @@ const NewDocument = ({setCollapse}) => {
                 <button className='w-9 h-9 md:w-10 md:h-10 bg-red-800 text-white hover:bg-red-600 shadow rounded-full flex justify-center items-center text-3xl transition duration-200 ease-in-out transform hover:scale-110'
                     onClick={()=>navigate(-1)}
                 >
-                    <i class="ri-arrow-left-s-line"></i>
+                    <i className="ri-arrow-left-s-line"></i>
                 </button>
                 <h2 className='text-base font-medium text-right'>New Document</h2>
             </div>
@@ -183,6 +225,10 @@ const NewDocument = ({setCollapse}) => {
                     </DragDropContext>
                     </div>
                 </div>
+                
+                <input type="file" id="file_upload" accept=".dotx,.docx,.docm,.dot,.doc,.rtf,.txt,.xml,.sfdt" onChange={onFileChange}/>
+                <button className="border-1 border-red-800 px-5 py-2 rounded-lg" onClick={loadFileFromServer}>Load File From Serve</button>
+
                 <div className='mt-13'>
                     <h1 className='text-center font-medium'>Embed Document</h1>
                     <div className='mt-4 flex justify-center items-center'>
@@ -240,6 +286,7 @@ const NewDocument = ({setCollapse}) => {
                     <ButtonSave type='submit' onClick={handleSave} />
                 </div>
             </div>
+            {loader && <Loader />}
         </div>
     )
 }
