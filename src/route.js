@@ -7,6 +7,8 @@ import Login from "./container/auth/Login"
 import NewDocument from "./container/admin/NewDocument"
 import DetailDocument from "./container/DetailDocument"
 import ParameterConfig from "./container/admin/ParameterConfig"
+import DocumentUser from "./container/user/DocumentUser"
+import History from "./container/user/History"
 // import Register from "./container/auth/Register"
 // import OtpPage from "./container/auth/OtpPage"
 
@@ -84,35 +86,61 @@ export const RouteAdminRole = [
     {
         name_var: 'Document',
         url_var: 'document',
-        icon_var: 'ri-home-3-fill',
+        icon_var: 'ri-book-open-fill',
         children: []
     },
     {
         name_var: 'User',
         url_var: 'user',
-        icon_var: 'ri-home-3-fill',
+        icon_var: 'ri-file-user-fill',
         children: []
     },
     {
         name_var: 'User Role',
         url_var: 'user-role',
-        icon_var: 'ri-home-3-fill',
+        icon_var: 'ri-folder-user-fill',
         children: []
     },
     {
         name_var: 'Parameter Config',
         url_var: 'parameter-config',
-        icon_var: 'ri-home-3-fill',
+        icon_var: 'ri-settings-3-fill',
         children: []
     },
     {
         name_var: 'Profile',
         url_var: 'profile',
-        icon_var: 'ri-home-3-fill',
+        icon_var: 'ri-user-5-fill',
         children: []
     }
 ]
 
+export const RouteUserRole = [
+    {
+        name_var: 'Dashboard',
+        url_var: '',
+        icon_var: 'ri-home-3-fill',
+        children: []
+    },
+    {
+        name_var: 'Document',
+        url_var: 'document-user',
+        icon_var: 'ri-book-open-fill',
+        children: []
+    },
+    {
+        name_var: 'History',
+        url_var: 'sign-history',
+        icon_var: 'ri-history-fill',
+        children: []
+    },
+    {
+        name_var: 'Profile',
+        url_var: 'profile',
+        icon_var: 'ri-user-5-fill',
+        children: []
+    }
+]
 
 export const DashboardRoutes = [
     {
@@ -147,7 +175,16 @@ export const DashboardRoutes = [
     {
         path : "parameter-config",
         component: <ParameterConfig />
-    }
+    },
+    // User
+    {
+        path : "document-user",
+        component: <DocumentUser />
+    },
+    {
+        path : "sign-history",
+        component: <History />
+    },
 ]
 
 
