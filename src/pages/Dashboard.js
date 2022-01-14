@@ -62,7 +62,7 @@ function Dashboard({setUserData}) {
 
 				
 				{/* FOOTER */}
-				<div className='flex items-center justify-between font-medium bg-white p-5 sm:px-6 lg:px-8 border-t-2 border-l-2 border-r-2 border-gray-200 text-xss md:text-xs mt-auto'>
+				<div className='flex items-center justify-between font-medium bg-white p-5 sm:px-6 lg:px-8 border-t-2 border-l-2 border-r-2 border-gray-200 text-xsm md:text-xs mt-auto'>
 					<p>Design & Develop by Ories</p>
 					<p>{new Date().getFullYear()} © CompanyName v1.0</p>
 				</div>
