@@ -85,9 +85,9 @@ export const deleteUser = async (userID) => {
     }
 }
 
-export const disableUser = async (userID) => {
+export const changePasswordUser = async (userID, payload) => {
     try {
-        const data = await axios.delete(baseURL + '/user/disable/' + userID, {
+        const data = await axios.put(baseURL + '/user/change/password/' + userID, payload, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem("doc-token")}`,
                 Accept: "application/json",
@@ -97,9 +97,27 @@ export const disableUser = async (userID) => {
         return data
     } catch (error) {
         if(error.response) return error.response
-        else return JSON.parse(JSON.stringify(error)) 
+        else return JSON.parse(JSON.stringify(error))  
     }
 }
+
+
+export const activateUser = async (userID, payload) => {
+    try {
+        const data = await axios.put(baseURL + '/user/change/active/' + userID, payload, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem("doc-token")}`,
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            }
+        })
+        return data
+    } catch (error) {
+        if(error.response) return error.response
+        else return JSON.parse(JSON.stringify(error))  
+    }
+}
+
 
 export const getMenu = async (token, userGroupID) => {
     try {
