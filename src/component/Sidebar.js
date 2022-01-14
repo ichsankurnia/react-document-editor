@@ -1,17 +1,19 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { RouteAdminRole } from "../route";
+import { RouteAdminRole, RouteUserRole } from "../route";
 import Header from "./Header";
 import { connect } from "react-redux";
 import Helper from "../utils/Helper";
 
 
-const Sidebar = ({collapse}) => {
+const Sidebar = ({user, collapse}) => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const [menuActive, setMenuActive] = useState('')
 
     const location = useLocation()
     const navigate = useNavigate()
+
+    const menuList = user.i_group !== 1? RouteUserRole : RouteAdminRole
 
 	const trigger = useRef(null);
 	const sidebar = useRef(null);
@@ -77,7 +79,7 @@ const Sidebar = ({collapse}) => {
 
     
     const getRoutesPath = () => {
-        return RouteAdminRole?.map(({name_var, url_var, icon_var, children}, key) => 
+        return menuList?.map(({name_var, url_var, icon_var, children}, key) => 
             <div key={key} className='mb-5 font-medium'>
                 {children && children.length> 0?
                 <div>
@@ -111,7 +113,7 @@ const Sidebar = ({collapse}) => {
     }
 
     const getRoutesPathUnCollapese = () => {
-        return RouteAdminRole?.map(({url_var, icon_var, children}, key) => 
+        return menuList?.map(({url_var, icon_var, children}, key) => 
             <div key={key} className='mb-5 relative flex justify-center font-medium'>
                 {children && children.length> 0?
                 <div>
@@ -149,7 +151,7 @@ const Sidebar = ({collapse}) => {
                 
                 {/* SIDEBAR MOBILE */}
                 <div className={`fixed inset-0 bg-black bg-opacity-60 z-40 md:hidden md:z-auto transition-opacity duration-200 ${sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} aria-hidden="true" onClick={() => setSidebarOpen(false)}></div>
-                <div className='md:hidden bg-white sticky top-0 w-full h-12 py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-between shadow rounded-2xl z-30'>
+                <div className='md:hidden bg-white sticky top-0 w-full h-12 py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-between shadow z-30'>
                     <button onClick={() => setSidebarOpen(!sidebarOpen)}
                         className='inline-flex items-center justify-center p-1 rounded-md text-black hover:bg-black hover:text-white outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black'
                     >	
@@ -168,7 +170,7 @@ const Sidebar = ({collapse}) => {
                 
                 {/* SIDEBAR */}
                 <div id="sidebar" ref={sidebar}
-                    className={`absolute z-40 left-0 top-0 md:static md:left-auto md:top-auto h-screen bg-red-800 md:translate-x-0 transform transition-all duration-500 ease-in-out ${sidebarOpen? 'translate-x-0' : '-translate-x-64'}  ${collapse?'w-64':'w-18'} `}
+                    className={`absolute z-40 left-0 top-0 md:static md:left-auto md:top-auto h-screen bg-red-800 md:translate-x-0 transform transition-all duration-700 ease-in-out ${sidebarOpen? 'translate-x-0' : '-translate-x-64'}  ${collapse?'w-64':'w-18'} `}
                 >
                     <div className={`overflow-y-auto ${collapse? 'px-1 py-4': 'p-5'} flex flex-col items-center h-full font-poppins text-white overflow-x-hidden`}>
                         <span className='mt-2 cursor-pointer' onClick={handleClickLogo}>{collapse? 'App Logo' : 'Logo'}</span>
@@ -192,6 +194,7 @@ const Sidebar = ({collapse}) => {
 
 const mapStateToProps = (state) => {
     return {
+        user: state.user,
         collapse: state.collapse,
     }
 }
