@@ -4,11 +4,11 @@ import Profile from "./container/Profile"
 import User from "./container/admin/User"
 import UserRole from "./container/admin/UserRole"
 import Login from "./container/auth/Login"
-import NewDocument from "./container/admin/NewDocument"
-import DetailDocument from "./container/DetailDocument"
+import DocumentNew from "./container/admin/DocumentNew"
 import ParameterConfig from "./container/admin/ParameterConfig"
 import DocumentUser from "./container/user/DocumentUser"
 import History from "./container/user/History"
+import DocumentDetail from "./container/admin/DocumentDetail"
 // import Register from "./container/auth/Register"
 // import OtpPage from "./container/auth/OtpPage"
 
@@ -158,11 +158,11 @@ export const DashboardRoutes = [
     },
     {
         path : "document-new",
-        component: <NewDocument />
+        component: <DocumentNew />
     },
     {
-        path : "document-detail",
-        component: <DetailDocument />
+        path : "document-detail/:document_id",
+        component: <DocumentDetail />
     },
     {
         path : "user",
