@@ -1,15 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { connect } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import ModalConfirm from './modal/ModalConfirm';
 
 const BG_AVATAR = ['152e4d', '0891b2', '2E8B57', '8B4513', '4B0082', '999', '000']
 
-function UserMenu() {
+function UserMenu({user}) {
     const [modalOut, showModalOut] = useState(false)
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
-    const userLocalStorage = JSON.parse(localStorage.getItem('doc-user'))
+    const userLocalStorage = user.i_id? user : JSON.parse(localStorage.getItem('doc-user'))
 
     const navigate = useNavigate()
     const trigger = useRef(null);
@@ -92,5 +93,10 @@ function UserMenu() {
     )
 }
 
+const mapStateToProps = (state) => {
+    return {
+        user: state.user
+    }
+}
 
-export default UserMenu;
+export default connect(mapStateToProps, null)(UserMenu);

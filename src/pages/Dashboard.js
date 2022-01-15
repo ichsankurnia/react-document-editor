@@ -28,7 +28,9 @@ function Dashboard({setUserData}) {
 				localStorage.clear()
 				navigate('/auth', {replace: true})
 			}else{
-				setUserData(JSON.parse(localStorage.getItem('doc-user')))
+				const dataUser = JSON.parse(localStorage.getItem('doc-user'))
+				dataUser['i_id'] = decode.i_id
+				setUserData(dataUser)
 			}
 		}
 	}, [navigate, setUserData])
