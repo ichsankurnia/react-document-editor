@@ -53,7 +53,7 @@ const ModalFormChangePassword = ({onCancel, onSubmit}) => {
                         </div>
                         <span className='mx-5 mb-3 sm:mb-0'></span>
                         <div className={containerInput}>
-                            <label>Konfirmasi Password</label>
+                            <label>Confirm Password</label>
                             <input type='password' className={inputText} placeholder='*****' 
                                 {...register("confirm_pass", { required: "Confirm password is required." })}
                             />

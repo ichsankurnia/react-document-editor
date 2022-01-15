@@ -263,9 +263,8 @@ const User = ({user}) => {
 
     return (
         <div className='flex item-center flex-col p-6 mb-auto'>
-            <div className='flex items-center justify-between'>
-                <h1 className='text-base font-semibold'>USER</h1>
-                <h2 className='text-base font-medium'>User Management<span className='text-xs'> / </span><span className='text-sm'>User</span></h2>
+            <div>
+                <h2 className='text-base font-medium'>User Management</h2>
             </div>
 
             <div className='flex flex-col md:flex-row items-center justify-between my-6'>

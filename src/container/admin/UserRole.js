@@ -171,9 +171,8 @@ const UserRole = ({user, userRole, setUserRoleList}) => {
 
     return (
         <div className='flex item-center flex-col p-6 mb-auto'>
-            <div className='flex items-center justify-between'>
-                <h1 className='text-base font-semibold'>USER ROLE</h1>
-                <h2 className='text-base font-medium'>User Management<span className='text-xs'> / </span><span className='text-sm'>User Role</span></h2>
+            <div>
+                <h2 className='text-base font-medium'>User Role Management</h2>
             </div>
 
             <div className='w-full bg-white rounded-2xl shadow-2xl p-6 mt-6'>

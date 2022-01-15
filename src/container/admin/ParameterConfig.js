@@ -15,9 +15,9 @@ const ParameterConfig = ({user}) => {
     const [modalErr, showModalErr] = useState(false)
     const [errMessage, setErrMessage] = useState('')
     const [modalForm, showModalForm] = useState(false)
-    const [isUpdate, setIsUpdate] = useState(false)
+    const [isUpdate, setIsUpdate] = useState(false)                                     // eslint-disable-line
 
-    const [dataParameter, setDataParameter] = useState([])
+    const [dataParameter, setDataParameter] = useState([])                              // eslint-disable-line
     const [filterData, setFilterData] = useState([])
     const [selectedData, setSelectedData] = useState(null)
 
@@ -91,9 +91,8 @@ const ParameterConfig = ({user}) => {
 
     return (
         <div className='flex item-center flex-col p-6 mb-auto'>
-            <div className='flex items-center justify-between'>
-                <h1 className='text-base font-semibold'>PARAMETER CONFIG</h1>
-                <h2 className='text-base font-medium'>Config<span className='text-xs'> / </span><span className='text-sm'>Parameter Config</span></h2>
+            <div>
+                <h1 className='text-base font-semibold'>Parameter Config</h1>
             </div>
 
             <div className='w-full bg-white rounded-2xl shadow-2xl p-6 mt-6'>
