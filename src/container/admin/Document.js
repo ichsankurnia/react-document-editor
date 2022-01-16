@@ -51,10 +51,10 @@ const Document = ({user}) => {
     }, [fetchData])
 
 
-    const handleDeleteData = async (data) => {
+    const handleDeleteData = async (docID) => {
         showLoader(true)
 
-        const res = await deleteDocument(data.i_id)
+        const res = await deleteDocument(docID)
 
         console.log('Get Document :', res)
         showLoader(false)
@@ -100,6 +100,11 @@ const Document = ({user}) => {
         }
     }
 
+    const handleDetailDoc = (docID) => {
+        showLoader(true)
+        navigate('/dashboard/document-detail/'+docID)
+    }
+
     const columns = [
         {
             Header: () => <span className='p-4'>Document Code</span>,
@@ -138,7 +143,7 @@ const Document = ({user}) => {
             Footer: 'Action',
             Cell: ({row}) => {
                 const data = row.original
-                return <DropdownDocument onDetail={()=>navigate('/dashboard/document-detail/'+data.i_id)} onDelete={() => handleDeleteData(data)} />
+                return <DropdownDocument onDetail={()=>handleDetailDoc(data.i_id)} onDelete={() => handleDeleteData(data.i_id)} />
             }
         }
     ]
