@@ -43,10 +43,18 @@ const DocumentNew = ({setCollapse}) => {
     } = useForm({ criteriaMode: "all" });
 
     useEffect(() => {
+        if(editor){
+            if(window.screen.width > 640){
+                setCollapse(false)
+            }
+        }else{
+            setCollapse(true)
+        }
+
         return () => {
             setCollapse(true)
         }
-    }, [setCollapse])
+    }, [setCollapse, editor])
 
     useEffect(() => {
         async function fetchUser(){
@@ -71,20 +79,20 @@ const DocumentNew = ({setCollapse}) => {
                             }
                             arr.push(obj)
                         })
+
+                        setColumns([
+                            {
+                                id: '1',
+                                name: "Users",
+                                items: arr
+                            },
+                            {
+                                id: '2',
+                                name: "Contributors",
+                                items: []
+                            }
+                        ])
                     }
-                    console.log(arr)
-                    setColumns([
-                        {
-                            id: '1',
-                            name: "Users",
-                            items: arr
-                        },
-                        {
-                            id: '2',
-                            name: "Contributors",
-                            items: []
-                        }
-                    ])
                 }else if(res.data.status === '01'){
                     toast.info('Session expired, please login!')
                     navigate('/auth')
@@ -129,14 +137,9 @@ const DocumentNew = ({setCollapse}) => {
     
     const handleShowEditor = () => {
         showEditor(true)
-        setCollapse(false)
         setDocumentUpload('')
     }
 
-    const handleUnshowEditor = () => {
-        showEditor(false)
-        setCollapse(true)
-    }
 
     const handleSave = (dataForm) => {
         if(columns[1].items.length>0){
@@ -197,9 +200,11 @@ const DocumentNew = ({setCollapse}) => {
                 }else{
                     toast.error(`${res.config?.url} ${res.status} ${res.statusText}`)
                 }
+                showLoader(false)
             }
         }else{
             toast.error(`${res.config?.url} ${res.message}`)
+            showLoader(false)
         }
     }
 
@@ -220,7 +225,11 @@ const DocumentNew = ({setCollapse}) => {
         showLoader(true)
         let ajax = new XMLHttpRequest();
         ajax.open('POST', 'https://ej2services.syncfusion.com/production/web-services/api/documenteditor/Import', true);
+        ajax.onprogress = () => {
+            console.log('Converting documunet to SFDT...')
+        }
         ajax.onreadystatechange = () => {
+            console.log('Convert DocToSFDT :', ajax.status, ajax.statusText)
             if (ajax.readyState === 4) {
                 if (ajax.status === 200 || ajax.status === 304) {
                     // open SFDT text in document editor
@@ -314,7 +323,7 @@ const DocumentNew = ({setCollapse}) => {
                         <h1 className='text-center font-medium'>Embed Document</h1>
                         <div className='mt-4 flex justify-center items-center'>
                             <button type="button" className={`w-40 md:w-48 h-15 md:h-18 mr-3 md:mr-5 px-5 font-medium bg-white shadow rounded-2xl flex justify-center items-center text-center hover:bg-red-800 hover:text-white ${!editor? 'bg-red-800 text-white':'bg-white text-black'} transition duration-200 ease-in-out transform hover:scale-110`}
-                                onClick={handleUnshowEditor}
+                                onClick={()=>showEditor(false)}
                             >
                                 <p>Upload Document</p>
                             </button>
@@ -331,7 +340,7 @@ const DocumentNew = ({setCollapse}) => {
                                     onClick={()=>showModalTemplate(true)}
                                 >
                                     <i className="ri-download-cloud-fill text-base mr-2"></i>
-                                    <label>Import Document Template</label>
+                                    <label className="cursor-pointer">Import Document Template</label>
                                 </button>
                                 <DocumentEditorContainerComponent id="container" height='100vh' className='mt-5'
                                     ref={(scope) => { setDocumentEditor(scope) }} 
