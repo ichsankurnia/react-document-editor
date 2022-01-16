@@ -49,9 +49,9 @@ export const getOneDocument = async (docID) => {
     }
 }
 
-export const getDocumentByUser = async (userID) => {
+export const getDocumentByUser = async () => {
     try {
-        const data = await axios.get(baseURL + '/document/user/' + userID, {
+        const data = await axios.get(baseURL + '/document/user', {
             headers: {
                 authorization: `Bearer ${localStorage.getItem("doc-token")}`,
                 Accept: "application/json",

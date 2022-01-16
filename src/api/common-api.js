@@ -6,7 +6,7 @@ export const baseURL = 'http://100.104.216.52:9000/api/v1'
 const api = axios.create({
     baseURL: baseURL,
     headers: {
-        authorization: `Bearer ${localStorage.getItem("agroo-token")}`,
+        authorization: `Bearer ${localStorage.getItem("doc-token")}`,
         Accept: "application/json",
         "Content-Type": "application/json"
     }
