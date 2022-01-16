@@ -157,7 +157,7 @@ const Profile = ({user, setUserData}) => {
                         </span>
                         <div className='md:ml-5 flex flex-col items-center md:items-start text-center md:text-left'>
                             <h1 className='font-bold text-xl sm:text-2xl'>{user.e_fullname}</h1>
-                            <h2 className='text-sm'>Join at {moment(user?.d_created_at).format('DD-MMM-YYYY mm:hh')}</h2>
+                            <h2 className='text-sm'>Join at {moment(user?.d_created_at).format('DD MMM YYYY mm:HH')}</h2>
                         </div>
                     </div>
                     <div className='inline-flex text-sm'>
@@ -228,7 +228,7 @@ const Profile = ({user, setUserData}) => {
                 </div>
 
                 <div className='bg-white text-text rounded-2xl shadow-2xl p-6 mt-6'>
-                    <h1 className='font-semibold mb-6 text-white'>Help</h1>
+                    <h1 className='font-semibold mb-6'>Help</h1>
                     <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center'>
                         <button className='hover:bg-red-800 hover:text-white rounded-2xl px-4 py-2 font-medium' onClick={()=>showModalPassword(true)}>Change Password</button>
                         <button className='hover:bg-red-800 hover:text-white rounded-2xl px-4 py-2 font-medium' onClick={handleMovePage}>Contact Us</button>

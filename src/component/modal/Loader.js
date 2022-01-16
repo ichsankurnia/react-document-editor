@@ -1,6 +1,6 @@
 export const Loader = () => {
     return (
-        <div className="modal" style={{zIndex: 99}}>
+        <div className="modal" style={{zIndex: 999}}>
             <div className='modal-outside'></div>
             <div className="pulse-container">  
                 <div className="pulse-bubble pulse_bubble-1"></div>

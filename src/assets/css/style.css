@@ -78,6 +78,19 @@ body{
     }
 }
 
+.progress {
+    animation: pulseRed 1250ms infinite;
+}
+
+@keyframes pulseRed {
+    0% {
+        box-shadow: #bb2124 0 0 0 0;
+    }
+    75% {
+        box-shadow: #bb212400 0 0 0 20px;
+    }
+}
+
 ::-webkit-input-placeholder {
     font-style: italic;
  }
