@@ -23,7 +23,7 @@ const App = () => {
 					{/* <Route path='*' element={<Navigate replace to='/' />} /> */}
 				</Routes>
 			</Router>
-			<div className="text-sm">
+			<div className='text-sms'>
 				<ToastContainer
 					position='bottom-right'
 					// theme='dark'
