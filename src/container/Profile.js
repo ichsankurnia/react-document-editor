@@ -111,7 +111,7 @@ const Profile = ({user, setUserData}) => {
         showLoader(false)
         if(res.data){
             if(res.data.status === '00'){
-                toast.success('Password changed, please login again')
+                toast.success('Password changed, please login again!')
                 showModalPassword(false)
                 setTimeout(() => {
                     handleLogout()
@@ -157,7 +157,7 @@ const Profile = ({user, setUserData}) => {
                         </span>
                         <div className='md:ml-5 flex flex-col items-center md:items-start text-center md:text-left'>
                             <h1 className='font-bold text-xl sm:text-2xl'>{user.e_fullname}</h1>
-                            <h2 className='text-sm'>Join at {moment(user?.d_created_at).format('DD MMM YYYY mm:HH')}</h2>
+                            <h2 className='text-sm'>Join at {moment(user?.d_created_at).format('DD MMM YYYY HH:mm')}</h2>
                         </div>
                     </div>
                     <div className='inline-flex text-sm'>

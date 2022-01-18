@@ -46,7 +46,7 @@ function Dashboard({setUserData}) {
 	return (
 		<div className='flex flex-col md:flex-row h-screen overflow-hidden font-poppins text-xs'>
 			<Sidebar />
-			<div className='bg-soft w-full overflow-auto h-screen flex flex-col'>
+			<div className='bg-soft w-full overflow-y-auto overflow-x-hidden h-screen flex flex-col'>
 				
 				{/* HEADER */}
 				<div className='hidden md:block h-12 bg-white py-8 px-4 sm:px-6 lg:px-8 shadow sticky top-0 z-10'>
