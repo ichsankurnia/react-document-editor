@@ -8,8 +8,8 @@ import moment from "moment"
 import { toast } from "react-toastify"
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
-import { PdfViewerComponent, Toolbar, Magnification, Navigation, ThumbnailView, LinkAnnotation, Annotation, FormFields, FormDesigner, Print, Inject } from '@syncfusion/ej2-react-pdfviewer';
-// import { PdfViewerComponent, Toolbar, Magnification, Navigation, LinkAnnotation, BookmarkView, ThumbnailView, Print, TextSelection, TextSearch, Annotation, FormFields, FormDesigner, Inject } from '@syncfusion/ej2-react-pdfviewer';
+// import { PdfViewerComponent, Toolbar, Magnification, Navigation, ThumbnailView, LinkAnnotation, Annotation, FormFields, FormDesigner, Print, Inject } from '@syncfusion/ej2-react-pdfviewer';
+import { PdfViewerComponent, Toolbar, Magnification, Navigation, LinkAnnotation, BookmarkView, ThumbnailView, Print, TextSelection, TextSearch, Annotation, FormFields, FormDesigner, Inject } from '@syncfusion/ej2-react-pdfviewer';
 import { enableRipple } from '@syncfusion/ej2-base';
 import { setCollapse } from "../../reduxs/action/actions"
 import { useForm } from "react-hook-form"
@@ -22,7 +22,21 @@ enableRipple(true);
 const containerInput = 'flex flex-col w-full'
 const inputText = 'outline-none border-1 border-gray-200 rounded-lg py-2 px-3 sm:p-3 mt-1 focus:ring-1 focus:ring-red-800 focus:border-red-800'
 
-export const annotationToolbarItems = ["StampAnnotationTool", 'HandWrittenSignatureTool', 'InkAnnotationTool', 'AnnotationDeleteTool', 'ColorEditTool', 'StrokeColorEditTool', 'ThicknessEditTool','OpacityEditTool']
+export const annotationToolbarItems = [
+    // 'HighlightTool',
+    // 'UnderlineTool',
+    // 'StrikethroughTool',
+    // 'ShapeTool',
+    // 'CalibrateTool',
+    'ColorEditTool', 'StrokeColorEditTool', 'ThicknessEditTool', 'OpacityEditTool', 'AnnotationDeleteTool', 'HandWrittenSignatureTool', "StampAnnotationTool", 'InkAnnotationTool', 
+// 'FreeTextAnnotationTool',
+// 'FontFamilyAnnotationTool',
+// 'FontSizeAnnotationTool',
+// 'FontStylesAnnotationTool',
+// 'FontAlignAnnotationTool',
+// 'FontColorAnnotationTool',
+// 'CommentPanelTool'
+]
 export const formDesignerToolbarItems = ['DrawSignatureTool', 'DeleteTool']
 
 
@@ -148,7 +162,7 @@ const DocumentDetail = ({user, setCollapse}) => {
                 <p className="font-semibold text-base mt-5">{dataDocument?.c_document_code || 'Document Code'}</p>
                 <p className="font-bold text-xl mt-2 w-9/12 md:w-1/2">{dataDocument?.e_tittle || 'Document Title'}</p>
                 <p className="mt-2 w-9/12 md:w-1/2">{dataDocument?.c_desc || 'Description of the document'}</p>
-                <p className="my-3">Created on {moment(dataDocument?.d_created_at).format('DD MMM YYYY mm:HH')||moment().format('DD MMM YYY mm:HH')}</p>
+                <p className="my-3">Created on {moment(dataDocument?.d_created_at).format('DD MMM YYYY HH:mm')||moment().format('DD MMM YYYY HH:mm')}</p>
                 <div className="my-2 w-full">
                     <div className='flex justify-center items-center'>
                         <p>Contributors Progress</p>
@@ -173,14 +187,14 @@ const DocumentDetail = ({user, setCollapse}) => {
             <div className='bg-white rounded-2xl shadow p-6 mt-5 h-full'>
                 {user.i_group !==1 && <p className='font-semibold mb-5'>Sign your document here</p>}
                 {dataDocument?.e_encode_document &&
-                <PdfViewerComponent id="container" serviceUrl="https://ej2services.syncfusion.com/production/web-services/api/pdfviewer" style={{ 'height': '800px' }}
+                <PdfViewerComponent id="container" serviceUrl="https://ej2services.syncfusion.com/production/web-services/api/pdfviewer" style={{ 'height': '640px' }}
                     ref={(scope) => { setPdfViewer(scope) }}
                     documentPath={dataDocument.e_encode_document}
                     // enableDownload={false} 
-                    toolbarSettings={{annotationToolbarItems : annotationToolbarItems, formDesignerToolbarItems: formDesignerToolbarItems}}
+                    toolbarSettings={{annotationToolbarItems : annotationToolbarItems, formDesignerToolbarItems: formDesignerToolbarItems, showTooltip: true}}
                 >
-                    <Inject services={[Toolbar, Magnification, Navigation, ThumbnailView, LinkAnnotation, Annotation, FormFields, FormDesigner, Print]} />
-                    {/* <Inject services={[Toolbar, Magnification, Navigation, LinkAnnotation, BookmarkView, ThumbnailView, Print, TextSelection, TextSearch, Annotation, FormFields, FormDesigner]} /> */}
+                    {/* <Inject services={[Toolbar, Magnification, Navigation, ThumbnailView, LinkAnnotation, Annotation, FormFields, FormDesigner, Print]} /> */}
+                    <Inject services={[Toolbar, Magnification, Navigation, LinkAnnotation, BookmarkView, ThumbnailView, Print, TextSelection, TextSearch, Annotation, FormFields, FormDesigner]}/>
                 </PdfViewerComponent>
                 }
 
