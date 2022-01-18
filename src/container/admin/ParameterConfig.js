@@ -1,19 +1,20 @@
-import { useState } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { connect } from "react-redux"
 
-import TableFull from "../../component/table/TableFull"
-import ModalMessage from "../../component/modal/ModalMessage"
+import TableMax from "../../component/table/TableMax"
 import Loader from "../../component/modal/Loader"
 import { ButtonAdd } from "../../component/button/CustomButton"
-import DropdownTwoOption from "../../component/dropdown/DropTwoOption"
 import ModalFormParameterConfig from "../../component/modal/ModalFormParameterConfig"
 import SearchField from "../../component/textfield/SearchField"
+import { useNavigate } from "react-router-dom"
+import { createNewParamConfig, deleteParamConfig, getAllParamConfig, updateParamConfig, updateStatusParamConfig } from "../../api/paramconfig-api"
+import { toast } from "react-toastify"
+import DropdownActionParamConfig from "../../component/dropdown/DropdownActionParamConfig"
 
 
-const ParameterConfig = ({user}) => {
+
+const ParameterConfig = () => {
     const [loader, showLoader] = useState(false)
-    const [modalErr, showModalErr] = useState(false)
-    const [errMessage, setErrMessage] = useState('')
     const [modalForm, showModalForm] = useState(false)
     const [isUpdate, setIsUpdate] = useState(false)                                     // eslint-disable-line
 
@@ -21,6 +22,36 @@ const ParameterConfig = ({user}) => {
     const [filterData, setFilterData] = useState([])
     const [selectedData, setSelectedData] = useState(null)
 
+    const navigate = useNavigate()
+
+    const fetchData = useCallback( async () => {
+        showLoader(true)
+        const res = await getAllParamConfig()
+
+        showLoader(false)
+        console.log('Fetch Param Config :', res)
+        if(res.data){
+            if(res.data.status === '00'){
+                setDataParameter(res.data.data)
+                setFilterData(res.data.data)
+            }else if(res.data.status === '01'){
+                toast.info('Session expired, please login!')
+                navigate('/auth')
+            }else{
+                if(res.data.message){
+                    toast.error(res.data.message)
+                }else{
+                    toast.error(`${res.config?.url} ${res.status} ${res.statusText}`)
+                }
+            }
+        }else{
+            toast.error(`${res.config?.url} ${res.message}`)
+        }
+    }, [navigate])
+
+    useEffect(() => {
+        fetchData()
+    }, [fetchData])
 
 
     const handleEditData =  (selectedData) => {
@@ -30,42 +61,129 @@ const ParameterConfig = ({user}) => {
     }
 
     const handleReceiveDataForm = async (data) => {
+        showLoader(true)
+        
+        let res = null
+        if(isUpdate){
+            res = await updateParamConfig(selectedData.i_id, data)
+        }else{
+            res = await createNewParamConfig(data)
+        }
 
+        console.log('Create/Update Param config :', res)
+        showLoader(false)
+        if(res.data){
+            if(res.data.status === '00'){
+                toast.success(res.data.message)
+                fetchData()
+                resetForm()
+            }else{
+                if(res.data.message){
+                    toast.error(res.data.message)
+                }else{
+                    toast.error(`${res.config?.url} ${res.status} ${res.statusText}`)
+                }
+            }
+        }else{
+            toast.error(`${res.config?.url} ${res.message}`)
+        }
     }
 
     const handleDeleteItem = async (data) => {
+        const res = await deleteParamConfig(data.i_id)
 
+        console.log("DELETE param config :", res)
+        showLoader(false)
+        if(res.data){
+            if(res.data.status === '00'){
+                toast.success(res.data.message)
+                fetchData()
+            }else{
+                if(res.data.message){
+                    toast.error(res.data.message)
+                }else{
+                    toast.error(`${res.config?.url} ${res.status} ${res.statusText}`)
+                }
+            }
+        }else{
+            toast.error(`${res.config?.url} ${res.message}`)
+        }
+    }
+
+    const handleActivateParamConfig = async (data) => {
+        const payload = {
+            b_active: data.b_active? false: true
+        }
+        const res = await updateStatusParamConfig(data.i_id, payload)
+
+        console.log("Activate param config :", res)
+        showLoader(false)
+        if(res.data){
+            if(res.data.status === '00'){
+                toast.success(res.data.message)
+                fetchData()
+            }else{
+                if(res.data.message){
+                    toast.error(res.data.message)
+                }else{
+                    toast.error(`${res.config?.url} ${res.status} ${res.statusText}`)
+                }
+            }
+        }else{
+            toast.error(`${res.config?.url} ${res.message}`)
+        }
     }
 
     const resetForm = () => {
-        setErrMessage('')
         setSelectedData(null)
         setIsUpdate(false)
-        showModalForm(false)
         showLoader(false)
-        showModalErr(false)
+        showModalForm(false)
     }
 
     const columns = [
         {
-            Header: () => <span className='p-4'>Parameter</span>,
-            Footer: 'Parameter',
-            accessor: 'parameter_var',
+            Header: () => <span className='p-4'>Title</span>,
+            Footer: 'Title',
+            accessor: 'n_setting',
             Cell: ({ value }) =>  <div className='text-left pl-4'>{value}</div>,
+        },
+        {
+            Header: 'Key',
+            Footer: 'Key',
+            accessor: 'btrim',
         },
         {
             Header: 'Value',
             Footer: 'Value',
-            accessor: 'value_var',
+            accessor: 'e_setting',
+        },
+        {
+            Header: 'Description',
+            Footer: 'Description',
+            accessor: 'e_desc',
+        },
+        {
+            Header: 'Status',
+            Footer: 'Status',
+            accessor: 'b_active',
+            Cell: ({value}) => (
+                value? 
+                <span className='bg-green-100 text-green-800 px-2 py-1 rounded-lg font-semibold'>Active</span>
+                :
+                <span className='bg-red-100 text-red-800 px-2 py-1 rounded-lg font-semibold'>Inactive</span>
+            )
         },
         {
             Header: 'Action',
             Footer: 'Action',
             Cell: ({row}) => {
                 const data = row.original
-                return <DropdownTwoOption
+                return <DropdownActionParamConfig
                         onEdit={() => handleEditData(data)}
                         onDelete={()=>handleDeleteItem(data)}
+                        titleActive={data.b_active?'Deactivate':'Activate'}
+                        onActive={()=>handleActivateParamConfig(data)}
                     />
             }
         }
@@ -105,7 +223,7 @@ const ParameterConfig = ({user}) => {
                     <ButtonAdd onClick={() => showModalForm(true)} />
                     <SearchField placeholder='Search parameter...' onChange={handleSearch} />
                 </div>
-                <TableFull dataTable={filterData} columnTable={columns} />
+                <TableMax dataTable={filterData} columnTable={columns} />
 
             </div>
 
@@ -115,7 +233,6 @@ const ParameterConfig = ({user}) => {
                 onCancel={resetForm}
                 onSubmit={handleReceiveDataForm}
             />}
-            {modalErr && <ModalMessage message={errMessage} onClose={()=>showModalErr(false)} />}
         </div>
     )
 }

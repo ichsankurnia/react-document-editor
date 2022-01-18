@@ -1,71 +1,139 @@
-import { useState } from "react"
-import DropdownTwoOption from "../../component/dropdown/DropTwoOption"
+import { useEffect, useState } from "react"
 import TableFull from "../../component/table/TableFull"
 import SearchField from "../../component/textfield/SearchField"
+import { useNavigate } from "react-router-dom"
+import { getDocumentByUser, getOneDocument } from "../../api/document-api"
+import Loader from "../../component/modal/Loader"
+import { toast } from "react-toastify"
 
 
 const History = () => {
-    const [dataDoc, setDataDoc] = useState([])                  // eslint-disable-line
+    const [loader, showLoader] = useState(false)
+    const [dataDocument, setDataDocument] = useState([])
     const [filterData, setFilterData] = useState([])
+    const [docDetail, setDocDetail] = useState(null)
 
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        async function fetchDocument(){
+            showLoader(true)
+    
+            const res = await getDocumentByUser(true)
+            
+            console.log('Get document byUser :', res)
+            if(res.data){
+                if(res.data.status === '00'){
+                    setDataDocument(res.data.data)
+                    setFilterData(res.data.data)
+                    showLoader(false)
+                }else if(res.data.status === '01'){
+                    showLoader(true)
+                    toast.info('Session expired, please login!')
+                    navigate('/auth')
+                }else{
+                    if(res.data.message){
+                        toast.error(res.data.message)
+                    }else{
+                        toast.error(`${res.config?.url} ${res.status} ${res.statusText}`)
+                    }
+                    showLoader(false)
+                }
+            }else{
+                toast.error(`${res.config?.url} ${res.message}`)
+                showLoader(false)
+            }
+        }
+
+        fetchDocument()
+    }, [navigate])
     
     const handleSearch = (event) => {
         event.preventDefault()
 
-        const newData = [...dataDoc]
+        const newData = [...dataDocument]
         if(event.target.value){
             const filtered = newData.filter(item => {
                 return (
-                    item.project_name_var.toLowerCase().includes(event.target.value.toLowerCase()) ||
-                    item.project_code_var.toLowerCase().includes(event.target.value.toLowerCase())
+                    item.c_document_code.toLowerCase().includes(event.target.value.toLowerCase()) ||
+                    item.e_tittle.toLowerCase().includes(event.target.value.toLowerCase()) ||
+                    item.c_desc.toLowerCase().includes(event.target.value.toLowerCase()) ||
+                    item.d_created_at.toLowerCase().includes(event.target.value.toLowerCase()) ||
+                    item.d_approve_at.toLowerCase().includes(event.target.value.toLowerCase())
                 )
             });
 
             setFilterData(filtered)
         }else{
-            setFilterData(dataDoc)
+            setFilterData(dataDocument)
         }
+    }
+
+    const fetchDocumentDetail = async (data) => {
+        showLoader(true)
+        const res = await getOneDocument(data.i_id)
+
+        showLoader(false)
+        console.log('Fetch Detail Document :', res)
+        if(res.data){
+            if(res.data.status === '00'){
+                setDocDetail(res.data.data)
+            }else if(res.data.status === '01'){
+                toast.info('Session expired, please login!')
+                navigate('/auth')
+            }else{
+                if(res.data.message){
+                    toast.error(res.data.message)
+                }else{
+                    toast.error(`${res.config?.url} ${res.status} ${res.statusText}`)
+                }
+            }
+        }else{
+            toast.error(`${res.config?.url} ${res.message}`)
+        }
+    }
+
+    const handleExpandDoc = () => {
+        // window.open(res.data.data.e_encode_document);
+        let pdfWindow = window.open("", '_blank', 'location=yes,height=1080,width=1920,scrollbars=yes,status=yes')
+        pdfWindow.document.write(
+            "<iframe width='100%' height='100%' src='" + docDetail.e_encode_document + "'></iframe>"
+        )
     }
     
     const columns = [
         {
             Header: () => <span className='p-4'>Document Code</span>,
             Footer: 'Document Code',
-            accessor: 'project_code_var',
+            accessor: 'c_document_code',
             Cell: ({ value }) =>  <div className='text-left pl-4'>{value}</div>,
         },
         {
             Header: 'Title',
             Footer: 'Title',
-            accessor: 'project_name_var'
+            accessor: 'e_tittle'
         },
         {
             Header: 'Description',
             Footer: 'Description',
-            accessor: 'contributor'
+            accessor: 'c_desc'
         },
         {
-            Header: 'Sign At',
-            Footer: 'Sign At',
-            accessor: 'signat'
+            Header: 'Created at',
+            Footer: 'Created at',
+            accessor: 'd_created_at'
         },
         {
-            Header: 'Status',
-            Footer: 'Status',
-            accessor: 'status_int',
-            Cell: ({value}) => (
-                parseInt(value)===1? 
-                <span className='bg-agroo1 text-agroo4 px-2 py-1 rounded-lg font-semibold'>Active</span>
-                :
-                <span className='bg-red-100 text-red-800 px-2 py-1 rounded-lg font-semibold'>Inactive</span>
-            )
+            Header: 'Signed at',
+            Footer: 'Signed at',
+            accessor: 'd_approve_at'
         },
         {
             Header: 'Action',
             Footer: 'Action',
             Cell: ({row}) => {
-                const data = row.original                               // eslint-disable-line
-                return <DropdownTwoOption />
+                const data = row.original
+                return <button onClick={()=>fetchDocumentDetail(data)} className="text-xl hover:text-red-500 transition duration-200 ease-in-out transform hover:scale-125"><i className="ri-picture-in-picture-exit-fill"></i></button>
             }
         }
     ]
@@ -83,6 +151,22 @@ const History = () => {
                 </div>
                 <TableFull dataTable={filterData} columnTable={columns} />
             </div>
+            {docDetail &&
+            <div className="fixed w-full h-full top-0 left-0 flex items-center justify-center z-30 overflow-auto">
+            <div className="absolute w-full h-full bg-gray-900 opacity-50" onClick={()=>setDocDetail(null)}></div>
+                <div className="bg-soft w-11/12 md:w-8/12 mx-auto my-auto pt-3 pb-5 px-5 rounded shadow-2xl z-50">
+                    <div className="flex justify-between items-center mb-2">
+                        <div className="flex items-center">
+                            <i className="ri-picture-in-picture-exit-fill text-lg md:text-2xl hover:text-red-500 transition duration-200 ease-in-out transform hover:scale-125 cursor-pointer" onClick={handleExpandDoc}></i>
+                            <h1 className="ml-2 font-semibold text-sms md:text-base">Doc. {docDetail.e_tittle} ({docDetail.c_document_code})</h1>
+                        </div>
+                        <i className="ri-close-circle-line text-lg md:text-3xl hover:text-red-500 transition duration-200 ease-in-out transform hover:scale-110 cursor-pointer" onClick={()=>setDocDetail(null)}></i>
+                    </div>
+                    <embed src={docDetail.e_encode_document} type="application/pdf" className="w-full" height={550} title={docDetail.c_document_code} />
+                </div>
+            </div>
+            }
+            {loader && <Loader />}
         </div>
     )
 }
