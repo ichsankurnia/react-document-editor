@@ -9,7 +9,7 @@ import Loader from "../../component/modal/Loader"
 import SearchField from "../../component/textfield/SearchField"
 import { toast } from "react-toastify"
 import { deleteDocument, getAllDocument } from "../../api/document-api"
-import DropdownDocument from "../../component/dropdown/DropdownDocument"
+import DropdownActionDocument from "../../component/dropdown/DropdownActionDocument";
 
 
 const Document = ({user}) => {
@@ -143,7 +143,7 @@ const Document = ({user}) => {
             Footer: 'Action',
             Cell: ({row}) => {
                 const data = row.original
-                return <DropdownDocument onDetail={()=>handleDetailDoc(data.i_id)} onDelete={() => handleDeleteData(data.i_id)} />
+                return <DropdownActionDocument onDetail={()=>handleDetailDoc(data.i_id)} onDelete={() => handleDeleteData(data.i_id)} />
             }
         }
     ]

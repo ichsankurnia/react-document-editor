@@ -76,7 +76,6 @@ const User = ({user}) => {
 
 
     const handleEditData =  (selectedData) => {
-        console.log(selectedData)
         setSelectedUser(selectedData)
         setIsUpdate(true)
         showModalUser(true)

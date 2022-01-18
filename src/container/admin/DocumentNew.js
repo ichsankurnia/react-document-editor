@@ -57,6 +57,10 @@ const DocumentNew = ({setCollapse}) => {
     }, [setCollapse, editor])
 
     useEffect(() => {
+        if(documenteditor) documenteditor.toolbar.enableItems(0, false)
+    }, [documenteditor])
+
+    useEffect(() => {
         async function fetchUser(){
             showLoader(true)
             const res = await getAllUser(localStorage.getItem('doc-token'))

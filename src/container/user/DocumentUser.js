@@ -39,7 +39,7 @@ const DocumentUser = () => {
     useEffect(() => {
         async function fetchDocument(){
             showLoader(true)
-            const res = await getDocumentByUser()
+            const res = await getDocumentByUser(false)
 
             showLoader(false)
             console.log('Fetch document :', res)

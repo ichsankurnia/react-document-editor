@@ -8,10 +8,12 @@ import { getTemplateDocument } from "../../api/document-api"
 
 const arrDoc = [
     {
+        id:5,
         e_tittle: 'Bahasa Indonesia',
         doc_file: 'TEMPLATE_MOA_TEL-U_BAHASA_INDONESIA.docx',
     },
     {
+        id:6,
         e_tittle: 'English',
         doc_file: 'TEMPLATE_MOA_TEL-U_BAHASA_INGGRIS.docx',
     }
@@ -57,7 +59,7 @@ const ModalSelectDocument = ({onCancel, onSubmit}) => {
                 <div className="flex flex-wrap justify-center items-center -mx-3">
                     {arrDoc.map((data, key) =>
                     <button type="button" className="bg-white rounded-lg shadow-lg w-40 md:w-56 flex flex-col justify-center items-center text-center p-4 md:p-6 m-2 md:m-5 relative" key={key} onClick={()=>setSelectedDoc(data)}>
-                        {selectedDoc?.doc_file === data.doc_file &&
+                        {selectedDoc?.id === data.id &&
                         <div className="absolute inset-0 w-full h-full bg-red-600 bg-opacity-20 rounded-lg shadow-l border-2 border-red-600"></div>
                         }
                         <LazyLoadImage effect='blur' src={docIcon} alt='' />

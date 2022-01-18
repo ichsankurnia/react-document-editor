@@ -16,7 +16,11 @@ const ModalFormParameterConfig = ({data, onCancel, onSubmit}) => {
 
     const setdefaultValue = useCallback ((obj) => {
         Object.keys(obj).map(key => {
-            return setValue(key, obj[key], { shouldValidate: true })
+            if(key === 'btrim'){
+                return setValue('c_setting', obj[key], { shouldValidate: true })
+            }else{
+                return setValue(key, obj[key], { shouldValidate: true })
+            }
         })
     }, [setValue])
 
@@ -27,9 +31,9 @@ const ModalFormParameterConfig = ({data, onCancel, onSubmit}) => {
     }, [data, setdefaultValue])
     
     const onValid = (dataForm) => {
-        const { parameter_var, value_var} = dataForm
+        const { c_setting, n_setting, e_setting, e_desc } = dataForm
 
-        const payload = { parameter_var, value_var}
+        const payload = { c_setting, n_setting, e_setting, e_desc }
 
         onSubmit(payload)
     }
@@ -43,21 +47,38 @@ const ModalFormParameterConfig = ({data, onCancel, onSubmit}) => {
                 {/* Body */}
                 <h1 className='text-base font-medium mb-8 sticky inset-0'>{data? 'Form Update Parameter':'Form Add Parameter'}</h1>
                 <form onSubmit={handleSubmit(onValid)}>
-                    <div className='flex flex-col sm:flex-row'>
+                    <div className='flex flex-col sm:flex-row mb-3'>
                         <div className={containerInput}>
-                            <label>Parameter</label>
-                            <input type='text' className={inputText} placeholder='NEW_SMS'
-                                {...register("parameter_var", { required: "This field is required." })}
+                            <label>Title</label>
+                            <input type='text' className={inputText} placeholder='NOTIFICATION DOCUMENT'
+                                {...register("n_setting", { required: "This field is required." })}
                             />
-                            <ErrorField errors={errors} name='parameter_var' />
+                            <ErrorField errors={errors} name='n_setting' />
                         </div>
                         <span className='mx-5 mb-3 sm:mb-0'></span>
                         <div className={containerInput}>
-                            <label>Value</label>
-                            <input type='text' className={inputText} placeholder='New document ready to be sign...' 
-                                {...register("value_var", { required: "This field is required." })}
+                            <label>Key</label>
+                            <input type='text' className={inputText+`${data?'bg-transparent':'bg-white'}`} placeholder='NOTWA01' readOnly={data?true:false}
+                                {...register("c_setting", { required: "This field is required." })}
                             />
-                            <ErrorField errors={errors} name='value_var' />
+                            <ErrorField errors={errors} name='c_setting' />
+                        </div>
+                    </div>
+                    <div className='flex flex-col sm:flex-row'>
+                        <div className={containerInput}>
+                            <label>Value</label>
+                            <textarea type='text' className={inputText} placeholder='Hallo, kamu punya dokumen baru untuk di tandatangani nih. Detailnya sebagai berikut :'
+                                {...register("e_setting", { required: "This field is required." })} rows="3"
+                            />
+                            <ErrorField errors={errors} name='e_setting' />
+                        </div>
+                        <span className='mx-5 mb-3 sm:mb-0'></span>
+                        <div className={containerInput}>
+                            <label>Description</label>
+                            <input type='text' className={inputText} placeholder='Description of parameter config...' 
+                                {...register("e_desc")}
+                            />
+                            <ErrorField errors={errors} name='e_desc' />
                         </div>
                     </div>
                     
