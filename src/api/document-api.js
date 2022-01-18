@@ -49,9 +49,12 @@ export const getOneDocument = async (docID) => {
     }
 }
 
-export const getDocumentByUser = async () => {
+export const getDocumentByUser = async (approvalStatus) => {
     try {
-        const data = await axios.get(baseURL + '/document/user', {
+        const payload = {
+            "b_approve": approvalStatus
+        }
+        const data = await axios.post(baseURL + '/document/user', payload, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem("doc-token")}`,
                 Accept: "application/json",
