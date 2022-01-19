@@ -99,7 +99,7 @@ const DocumentNew = ({setCollapse}) => {
                     }
                 }else if(res.data.status === '01'){
                     toast.info('Session expired, please login!')
-                    navigate('/auth')
+                    navigate('/auth', {replace:true})
                 }else{
                     if(res.data.message){
                         toast.error(res.data.message)
@@ -197,7 +197,7 @@ const DocumentNew = ({setCollapse}) => {
                 navigate('/dashboard/document')
             }else if(res.data.status === '01'){
                 toast.info('Session expired, please login!')
-                navigate('/auth')
+                navigate('/auth', {replace:true})
             }else{
                 if(res.data.message){
                     toast.error(res.data.message)

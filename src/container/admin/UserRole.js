@@ -37,7 +37,7 @@ const UserRole = ({user, userRole, setUserRoleList}) => {
                 setFilterData(res.data.data)
             }else if(res.data.status === '01'){
                 toast.info('Session expired, please login!')
-                navigate('/auth')
+                navigate('/auth', {replace:true})
             }else{
                 // toast.error(res.data.message)
                 toast.error(`${res.config?.url} ${res.status} ${res.statusText}`)

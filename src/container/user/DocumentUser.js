@@ -48,7 +48,7 @@ const DocumentUser = () => {
                     setListDocument(res.data.data)
                 }else if(res.data.status === '01'){
                     toast.info('Session expired, please login!')
-                    navigate('/auth')
+                    navigate('/auth', {replace:true})
                 }else{
                     if(res.data.message){
                         toast.error(res.data.message)

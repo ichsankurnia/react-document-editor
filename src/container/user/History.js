@@ -30,7 +30,7 @@ const History = () => {
                 }else if(res.data.status === '01'){
                     showLoader(true)
                     toast.info('Session expired, please login!')
-                    navigate('/auth')
+                    navigate('/auth', {replace:true})
                 }else{
                     if(res.data.message){
                         toast.error(res.data.message)
@@ -80,7 +80,7 @@ const History = () => {
                 setDocDetail(res.data.data)
             }else if(res.data.status === '01'){
                 toast.info('Session expired, please login!')
-                navigate('/auth')
+                navigate('/auth', {replace:true})
             }else{
                 if(res.data.message){
                     toast.error(res.data.message)
@@ -160,7 +160,7 @@ const History = () => {
                             <i className="ri-picture-in-picture-exit-fill text-lg md:text-2xl hover:text-red-500 transition duration-200 ease-in-out transform hover:scale-125 cursor-pointer" onClick={handleExpandDoc}></i>
                             <h1 className="ml-2 font-semibold text-sms md:text-base">Doc. {docDetail.e_tittle} ({docDetail.c_document_code})</h1>
                         </div>
-                        <i className="ri-close-circle-line text-lg md:text-3xl hover:text-red-500 transition duration-200 ease-in-out transform hover:scale-110 cursor-pointer" onClick={()=>setDocDetail(null)}></i>
+                        <i className="ri-close-fill text-lg md:text-3xl hover:text-red-500 transition duration-200 ease-in-out transform hover:scale-110 cursor-pointer" onClick={()=>setDocDetail(null)}></i>
                     </div>
                     <embed src={docDetail.e_encode_document} type="application/pdf" className="w-full" height={550} title={docDetail.c_document_code} />
                 </div>

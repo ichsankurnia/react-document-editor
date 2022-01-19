@@ -33,7 +33,7 @@ const Document = ({user}) => {
             }else if(res.data.status === '01'){
                 showLoader(true)
                 toast.info('Session expired, please login!')
-                navigate('/auth')
+                navigate('/auth', {replace:true})
             }else{
                 if(res.data.message){
                     toast.error(res.data.message)
@@ -63,7 +63,7 @@ const Document = ({user}) => {
                 toast.success(res.data.message)
                 fetchData()
             }else if(res.data.status === '00'){
-                navigate('/auth')
+                navigate('/auth', {replace:true})
             }else{
                 if(res.data.message){
                     toast.error(res.data.message)

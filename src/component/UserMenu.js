@@ -39,7 +39,7 @@ function UserMenu({user}) {
     
     const handleLogout = async () => {
         localStorage.clear()
-        navigate('/auth')
+        navigate('/auth', {replace:true})
     }
 
     return (
