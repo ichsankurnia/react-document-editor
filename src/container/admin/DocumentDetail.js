@@ -23,19 +23,9 @@ const containerInput = 'flex flex-col w-full'
 const inputText = 'outline-none border-1 border-gray-200 rounded-lg py-2 px-3 sm:p-3 mt-1 focus:ring-1 focus:ring-red-800 focus:border-red-800'
 
 export const annotationToolbarItems = [
-    // 'HighlightTool',
-    // 'UnderlineTool',
-    // 'StrikethroughTool',
-    // 'ShapeTool',
-    // 'CalibrateTool',
+    // 'HighlightTool','UnderlineTool','StrikethroughTool','ShapeTool','CalibrateTool',
     'ColorEditTool', 'StrokeColorEditTool', 'ThicknessEditTool', 'OpacityEditTool', 'AnnotationDeleteTool', 'HandWrittenSignatureTool', "StampAnnotationTool", 'InkAnnotationTool', 
-// 'FreeTextAnnotationTool',
-// 'FontFamilyAnnotationTool',
-// 'FontSizeAnnotationTool',
-// 'FontStylesAnnotationTool',
-// 'FontAlignAnnotationTool',
-// 'FontColorAnnotationTool',
-// 'CommentPanelTool'
+    // 'FreeTextAnnotationTool', 'FontFamilyAnnotationTool', 'FontSizeAnnotationTool', 'FontStylesAnnotationTool', 'FontAlignAnnotationTool', 'FontColorAnnotationTool', 'CommentPanelTool'
 ]
 export const formDesignerToolbarItems = ['DrawSignatureTool', 'DeleteTool']
 
@@ -67,8 +57,9 @@ const DocumentDetail = ({user, setCollapse}) => {
     useEffect(()=>{
         if(pdfViewer){
             pdfViewer.toolbar.showToolbarItem(["OpenOption"], false);
+            pdfViewer.downloadFileName = dataDocument?.c_document_code || new Date().getTime()
         }
-    }, [pdfViewer])
+    }, [pdfViewer, dataDocument?.c_document_code])
 
     useEffect(()=>{
         async function fetchDetailDocument(){
@@ -82,7 +73,7 @@ const DocumentDetail = ({user, setCollapse}) => {
                     setDataDocument(res.data.data)
                 }else if(res.data.status === '01'){
                     toast.info('Session expired, please login!')
-                    navigate('/auth')
+                    navigate('/auth', {replace:true})
                 }else{
                     if(res.data.message){
                         toast.error(res.data.message)
@@ -126,7 +117,7 @@ const DocumentDetail = ({user, setCollapse}) => {
                         navigate(-1)
                     }else if(res.data.status === '01'){
                         toast.info('Session expired, please login!')
-                        navigate('/auth')
+                        navigate('/auth', {replace:true})
                     }else{
                         if(res.data.message){
                             toast.error(res.data.message)
@@ -184,8 +175,9 @@ const DocumentDetail = ({user, setCollapse}) => {
                 </div>
             </div>
 
+            {user.i_group !==1?
             <div className='bg-white rounded-2xl shadow p-6 mt-5 h-full'>
-                {user.i_group !==1 && <p className='font-semibold mb-5'>Sign your document here</p>}
+                <p className='font-semibold mb-5'>Sign your document here</p>
                 {dataDocument?.e_encode_document &&
                 <PdfViewerComponent id="container" serviceUrl="https://ej2services.syncfusion.com/production/web-services/api/pdfviewer" style={{ 'height': '640px' }}
                     ref={(scope) => { setPdfViewer(scope) }}
@@ -198,7 +190,6 @@ const DocumentDetail = ({user, setCollapse}) => {
                 </PdfViewerComponent>
                 }
 
-                {user?.i_group !==1 &&
                 <form onSubmit={handleSubmit(handleSave)} className='mt-8'>
                     <div className={containerInput}>
                         <label>Note</label>
@@ -210,8 +201,12 @@ const DocumentDetail = ({user, setCollapse}) => {
                         <ButtonSave type='submit' />
                     </div>
                 </form>
-                }
             </div>
+            :
+            <div className='bg-white rounded-2xl shadow p-6 mt-5 h-full'>
+                <embed src={dataDocument?.e_encode_document} type="application/pdf" className="w-full h-screen" title={dataDocument?.c_document_code} />
+            </div>
+            }
 
             {loader && <Loader />}
         </div>
