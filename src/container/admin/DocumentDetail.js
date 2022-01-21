@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 import { approveDocument, getOneDocument } from "../../api/document-api"
@@ -15,6 +15,7 @@ import { setCollapse } from "../../reduxs/action/actions"
 import { useForm } from "react-hook-form"
 import ErrorField from "../../component/ErrorField"
 import { ButtonCancel, ButtonSave } from "../../component/button/CustomButton"
+import ModalMessage from "../../component/modal/ModalMessage"
 
 
 enableRipple(true);
@@ -31,12 +32,14 @@ export const formDesignerToolbarItems = ['DrawSignatureTool', 'DeleteTool']
 
 
 const DocumentDetail = ({user, setCollapse}) => {
+    const [modalMessage, showModalMessage] = useState(false)
     const [loader, showLoader] = useState(false)
     const [dataDocument, setDataDocument] = useState(null)
     const [pdfViewer, setPdfViewer] = useState(null)
-
+    
     const navigate = useNavigate()
     const {document_id} = useParams()
+    const timeout = useRef(null)
 
     const {
         register,
@@ -49,7 +52,12 @@ const DocumentDetail = ({user, setCollapse}) => {
             setCollapse(false)
         }
 
+        const timeoutRef = timeout.current
+
         return () => {
+            if(timeoutRef){
+                clearTimeout(timeoutRef)
+            }
             setCollapse(true)
         }
     }, [setCollapse])
@@ -107,14 +115,16 @@ const DocumentDetail = ({user, setCollapse}) => {
                     c_note
                 }
 
-                console.log(payload)
                 const res = await approveDocument(payload)
                 console.log('Approve Document :', res)
 
                 if(res.data){
                     if(res.data.status === '00'){
                         toast.success(res.data.message)
-                        navigate(-1)
+                        showModalMessage(true)
+                        timeout.current = setTimeout(() => {
+                            navigate(-1)
+                        }, 5000);
                     }else if(res.data.status === '01'){
                         toast.info('Session expired, please login!')
                         navigate('/auth', {replace:true})
@@ -209,6 +219,7 @@ const DocumentDetail = ({user, setCollapse}) => {
             }
 
             {loader && <Loader />}
+            {modalMessage && <ModalMessage message={'Document signed successfully'} onClose={()=>navigate(-1, {replace: true})} />}
         </div>
     )
 }
