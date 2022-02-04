@@ -8,15 +8,30 @@ import { getTemplateDocument } from "../../api/document-api"
 
 const arrDoc = [
     {
-        id:5,
-        e_tittle: 'Bahasa Indonesia',
-        doc_file: 'TEMPLATE_MOA_TEL-U_BAHASA_INDONESIA.docx',
+        id:1,
+        e_tittle: 'IA Skema 1',
+        doc_file: 'IA-Skema-1.docx',
     },
     {
-        id:6,
-        e_tittle: 'English',
-        doc_file: 'TEMPLATE_MOA_TEL-U_BAHASA_INGGRIS.docx',
-    }
+        id:2,
+        e_tittle: 'IA Skema 2',
+        doc_file: 'IA-Skema-2.docx',
+    },
+    {
+        id:3,
+        e_tittle: 'Template Draft MOA Bahasa',
+        doc_file: 'TEMPLATE-DRAFT-MOA-DN-BHS.docx',
+    },
+    {
+        id:4,
+        e_tittle: 'Template MOA English dan Bahasa',
+        doc_file: 'TEMPLATE-MOA-ENG-ID.docx',
+    },
+    {
+        id:5,
+        e_tittle: 'Template MOU',
+        doc_file: 'TEMPLATE-MOU.docx',
+    },
 ]
 
 const ModalSelectDocument = ({onCancel, onSubmit}) => {
