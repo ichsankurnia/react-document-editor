@@ -1,6 +1,6 @@
 import { Route, Navigate, Routes } from "react-router-dom"
 import NotFoundContainer from "../container/NotFoundContainer";
-import { AuthRoutes } from "../route";
+import { AuthRoutes } from "../routes";
 
 const Auth = () => {
     const getRoutes = () => {
@@ -12,7 +12,7 @@ const Auth = () => {
 	}
 
     return (
-        <div className='min-h-screen bg-soft flex justify-center items-center'>
+        <div className='h-screen bg-soft flex justify-center items-center'>
             <Routes>
                 {getRoutes()}
                 <Route path='*' element={<NotFoundContainer />} /> 

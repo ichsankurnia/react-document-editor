@@ -195,9 +195,6 @@ const DocumentNew = ({setCollapse}) => {
             if(res.data.status === '00'){
                 toast.success(res.data.message)
                 navigate('/dashboard/document')
-            }else if(res.data.status === '01'){
-                toast.info('Session expired, please login!')
-                navigate('/auth', {replace:true})
             }else{
                 if(res.data.message){
                     toast.error(res.data.message)
@@ -326,12 +323,12 @@ const DocumentNew = ({setCollapse}) => {
                     <div className='mt-13'>
                         <h1 className='text-center font-medium'>Embed Document</h1>
                         <div className='mt-4 flex justify-center items-center'>
-                            <button type="button" className={`w-40 md:w-48 h-15 md:h-18 mr-3 md:mr-5 px-5 font-medium bg-white shadow rounded-2xl flex justify-center items-center text-center hover:bg-red-800 hover:text-white ${!editor? 'bg-red-800 text-white':'bg-white text-black'} transition duration-200 ease-in-out transform hover:scale-110`}
+                            <button type="button" className={`w-40 md:w-48 h-15 md:h-18 mr-3 md:mr-5 px-5 font-medium text-black bg-white shadow rounded-2xl flex justify-center items-center text-center hover:bg-red-800 hover:text-white ${!editor? 'bg-red-800 text-white':'bg-white'} transition duration-200 ease-in-out transform hover:scale-110`}
                                 onClick={()=>showEditor(false)}
                             >
                                 <p>Upload Document</p>
                             </button>
-                            <button type="button" className={`w-40 md:w-48 h-15 md:h-18 ml-3 md:ml-5 px-5 font-medium bg-white shadow rounded-2xl flex justify-center items-center text-center hover:bg-red-800 hover:text-white ${editor? 'bg-red-800 text-white':'bg-white text-black'} transition duration-200 ease-in-out transform hover:scale-110`}
+                            <button type="button" className={`w-40 md:w-48 h-15 md:h-18 ml-3 md:ml-5 px-5 font-medium text-black bg-white shadow rounded-2xl flex justify-center items-center text-center hover:bg-red-800 hover:text-white ${editor? 'bg-red-800 text-white':'bg-white'} transition duration-200 ease-in-out transform hover:scale-110`}
                                 onClick={handleShowEditor}
                             >
                                 <p>Document Editor</p>

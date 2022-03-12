@@ -173,7 +173,7 @@ const DocumentDetail = ({user, setCollapse}) => {
                     </div>
                     <div className='flex flex-col md:flex-row justify-evenly items-center mt-2'>
                         {dataDocument?.detail?.length > 0 && dataDocument.detail.map((data, key) =>
-                            <div key={key} className='flex flex-col items-center w-32 h-32'>
+                            <div key={key} className='flex flex-col items-center'>
                                 <div className={`mb-1 flex justify-center items-center w-20 h-20 rounded-full ${data.b_approve? 'bg-succes':'bg-danger'} ${parseInt(data.i_stat) === dataDocument?.i_current_stat + 1&& 'progress'}`}>
                                     <div className='bg-white w-13 h-13 rounded-full flex justify-center items-center text-base font-semibold'>{key + 1}</div>
                                 </div>

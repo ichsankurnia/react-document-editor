@@ -68,7 +68,7 @@ const ModalFormUser = ({userRoleList, data, onCancel, onSubmit}) => {
                 {/* Body */}
                 <h1 className='text-base font-medium mb-8 sticky inset-0'>{data?'Form Update User':'Form Create New User' }</h1>
                 <form onSubmit={handleSubmit(onValid)}>
-                    <div className='flex flex-col sm:flex-row mb-3'>
+                    <div className='flex flex-col sm:flex-row mb-3 md:mr-10'>
                         <div className={containerInput}>
                             <label>Role</label>
                             <select id='routeUser' className={inputText} {...register("i_group", { required: "Role is required."})}>

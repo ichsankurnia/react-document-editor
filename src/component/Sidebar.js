@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { RouteAdminRole, RouteUserRole } from "../route";
+import { RouteAdminRole, RouteUserRole } from "../routes";
 import Header from "./Header";
 import { connect } from "react-redux";
 import Helper from "../utils/Helper";
@@ -102,7 +102,7 @@ const Sidebar = ({user, collapse}) => {
                 </div>
                 :
                 <div  onClick={() => setSidebarOpen(false)}>
-                    <Link to={url_var} className={`flex item-center px-6 py-3.5 -mx-2 -my-1 rounded-sm ${activePath(url_var)? 'bg-red-700 text-white border-white':'text-gray-300'} border-l-8 border-transparent hover:text-white hover:border-white hover:bg-red-900`}>
+                    <Link to={url_var} className={`flex item-center px-6 py-3.5 -mx-2 -my-1 rounded-sm ${activePath(url_var)? 'bg-red-700 text-white border-white':'text-gray-300 border-transparent'} border-l-8 hover:text-white hover:border-white hover:bg-red-900`}>
                         <i className={`${icon_var} mr-2`} />
                         <p>{Helper.capitalEachWord(name_var)}</p>
                     </Link>
@@ -114,7 +114,7 @@ const Sidebar = ({user, collapse}) => {
 
     const getRoutesPathUnCollapese = () => {
         return menuList?.map(({url_var, icon_var, children}, key) => 
-            <div key={key} className='mb-5 relative flex justify-center font-medium'>
+            <div key={key} className='relative flex justify-center font-medium'>
                 {children && children.length> 0?
                 <div>
                     <div className={`mb-1 cursor-pointer ${activeDrop(url_var) || menuActive===url_var? 'text-white scale-150' : 'text-gray-300'} hover:text-white mb-2.5 transition duration-300 ease-in-out transform hover:scale-150`} onMouseEnter={()=>handleShowSubMenu(url_var)} onClick={()=>handleShowSubMenu(url_var)}>
@@ -136,7 +136,7 @@ const Sidebar = ({user, collapse}) => {
                 </div>
                 :
                 <Link to={url_var} onClick={() => setSidebarOpen(false)}
-                    className={`${activePath(url_var)? 'bg-white text-red-800 scale-150': 'text-white'} w-6 h-6 rounded flex justify-center items-center hover:bg-white mb-2 hover:text-red-800 transition duration-200 ease-in-out transform hover:scale-150`}>
+                    className={`${activePath(url_var)? 'bg-white text-red-800 scale-150': 'text-white'} w-6 h-6 rounded flex justify-center items-center hover:bg-white mb-3 hover:text-red-800 transition duration-200 ease-in-out transform hover:scale-150`}>
                     <i className={`${icon_var} text-lg`} />
                 </Link>
                 }
@@ -146,8 +146,8 @@ const Sidebar = ({user, collapse}) => {
 
 
     return (
-        <Fragment>
-            <div className={`text-sms animate-fade-left-to-right z-20`}>
+        <>
+            <div className={`z-20`}>
                 
                 {/* SIDEBAR MOBILE */}
                 <div className={`fixed inset-0 bg-black bg-opacity-60 z-40 md:hidden md:z-auto transition-opacity duration-200 ${sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} aria-hidden="true" onClick={() => setSidebarOpen(false)}></div>
@@ -169,7 +169,7 @@ const Sidebar = ({user, collapse}) => {
                 </div>
                 
                 {/* SIDEBAR */}
-                <div id="sidebar" ref={sidebar}
+                {/* <div id="sidebar" ref={sidebar}
                     className={`absolute z-40 left-0 top-0 md:static md:left-auto md:top-auto h-screen bg-red-800 md:translate-x-0 transform transition-all duration-700 ease-in-out ${sidebarOpen? 'translate-x-0' : '-translate-x-64'}  ${collapse?'w-64':'w-18'} `}
                 >
                     <div className={`overflow-y-auto ${collapse? 'px-1 py-4': 'p-5'} flex flex-col items-center h-full font-poppins text-white overflow-x-hidden`}>
@@ -186,9 +186,31 @@ const Sidebar = ({user, collapse}) => {
                         }
 
                     </div>
+                </div> */}
+
+                <div id="sidebar" ref={sidebar}
+                    className={`absolute z-40 left-0 top-0 md:static md:left-auto md:top-auto h-screen bg-red-800 md:translate-x-0 transform transition-all duration-700 ease-in-out
+                    ${sidebarOpen? 'translate-x-0' : '-translate-x-64'} ${collapse? 'w-64 2xl:w-72':'md:w-[4.4rem] 2xl:w-[5rem]'} `}
+                >
+                    <div className={`overflow-y-auto overflow-x-hidden h-full flex flex-col items-center text-white text-left`}>
+                        <div className='cursor-pointer z-10 w-full px-4 mb-8 mt-6 text-center'>
+                            <span className='mt-2 cursor-pointer' onClick={handleClickLogo}>{collapse? 'MoU Document' : 'MoU'}</span>
+                        </div>
+
+                        {collapse?
+                        <div className="w-full space-y-4 px-1.5">
+                            {getRoutesPath()}
+                        </div>
+                        :
+                        <div className='w-full h-full flex flex-col absolute top-22 transition-all duration-1000 space-y-3'>
+                            {getRoutesPathUnCollapese()}
+                        </div>
+                        }
+                    </div>
+
                 </div>
             </div>
-        </Fragment>
+        </>
     )
 }
 
