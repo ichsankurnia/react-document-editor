@@ -11,7 +11,7 @@ import Dashboard from "./pages/Dashboard"
 const App = () => {
 	return (
 		<div className='font-poppins'>
-			<Router basename="mou">
+			<Router /* basename="mou" */>
 				<Routes>
 					{/* <Route path='/' element={<Home />} /> */}
 					<Route path='/dashboard/*' element={<Dashboard />} />

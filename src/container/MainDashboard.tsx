@@ -1,6 +1,11 @@
+import { FC } from "react"
 import { connect } from "react-redux"
 
-const MainDashboard = ({user}) => {
+type Props = {
+    user?: any
+}
+
+const MainDashboard: FC<Props> = ({user}) => {
     return (
         <div className='flex item-center flex-col p-5 md:p-6 mb-auto'>
             <h1 className='text-base font-semibold'>Dashboard</h1>
@@ -17,7 +22,7 @@ const MainDashboard = ({user}) => {
     )
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
     return {
         user: state.user
     }

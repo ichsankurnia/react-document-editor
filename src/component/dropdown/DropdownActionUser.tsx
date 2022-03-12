@@ -1,18 +1,25 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ModalConfirm from "../modal/ModalConfirm";
 
+type Props = {
+    onEdit: ()=> void,
+    onChangePassword?: ()=> void,
+    onDelete: ()=> void,
+    titleActive?: string,
+    onActive?: any,
+};
 
-const DropdownActionUser = ({onEdit, onChangePassword, onDelete, titleActive, onActive}) => {
+const DropdownActionUser: React.FC<Props> = ({onEdit, onChangePassword, onDelete, titleActive, onActive}) => {
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const [confirmActive, showConfirmActive] = useState(false)
     const [confirmDelete, showConfirmDelete] = useState(false)
 
-    const trigger = useRef(null);
-    const dropdown = useRef(null);
+    const trigger = useRef<any>(null);
+    const dropdown = useRef<any>(null);
 
     // close on click outside
     useEffect(() => {
-        const clickHandler = ({ target }) => {
+        const clickHandler = ({ target }: any) => {
         if (!dropdownOpen || dropdown.current?.contains(target) || trigger.current?.contains(target)) return;
             setDropdownOpen(false);
         };
@@ -22,7 +29,7 @@ const DropdownActionUser = ({onEdit, onChangePassword, onDelete, titleActive, on
 
     // close if the esc key is pressed
     useEffect(() => {
-        const keyHandler = ({ keyCode }) => {
+        const keyHandler = ({ keyCode }: any) => {
         if (!dropdownOpen || keyCode !== 27) return;
             setDropdownOpen(false);
         };

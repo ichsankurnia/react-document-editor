@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { FC, useCallback, useEffect, useState } from "react"
 import { connect } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
@@ -12,7 +12,11 @@ import { deleteDocument, getAllDocument } from "../../api/document-api"
 import DropdownActionDocument from "../../component/dropdown/DropdownActionDocument";
 
 
-const Document = ({user}) => {
+type Props = {
+    user?: any
+}
+
+const Document: FC<Props> = ({user}) => {
     const [loader, showLoader] = useState(false)
     const [dataDocument, setDataDocument] = useState([])
     const [filterData, setFilterData] = useState([])
@@ -51,7 +55,7 @@ const Document = ({user}) => {
     }, [fetchData])
 
 
-    const handleDeleteData = async (docID) => {
+    const handleDeleteData = async (docID: number) => {
         showLoader(true)
 
         const res = await deleteDocument(docID)
@@ -80,12 +84,12 @@ const Document = ({user}) => {
         showLoader(false)
     }
 
-    const handleSearch = (event) => {
+    const handleSearch = (event: any) => {
         event.preventDefault()
 
         const newData = [...dataDocument]
         if(event.target.value){
-            const filtered = newData.filter(item => {
+            const filtered = newData.filter((item: any) => {
                 return (
                     item.e_tittle.toLowerCase().includes(event.target.value.toLowerCase()) ||
                     item.c_document_code.toLowerCase().includes(event.target.value.toLowerCase()) ||
@@ -100,7 +104,7 @@ const Document = ({user}) => {
         }
     }
 
-    const handleDetailDoc = (docID) => {
+    const handleDetailDoc = (docID: number) => {
         showLoader(true)
         navigate('/dashboard/document-detail/'+docID)
     }
@@ -110,7 +114,7 @@ const Document = ({user}) => {
             Header: () => <span className='p-4'>Document Code</span>,
             Footer: 'Document Code',
             accessor: 'c_document_code',
-            Cell: ({ value }) =>  <div className='text-left pl-4'>{value}</div>,
+            Cell: ({ value }: any) =>  <div className='text-left pl-4'>{value}</div>,
         },
         {
             Header: 'Title',
@@ -131,7 +135,7 @@ const Document = ({user}) => {
             Header: 'Status',
             Footer: 'Status',
             accessor: 'b_active',
-            Cell: ({value}) => (
+            Cell: ({value}: any) => (
                 value? 
                 <span className='bg-green-100 text-green-800 px-2 py-1 rounded-lg font-semibold'>Active</span>
                 :
@@ -141,7 +145,7 @@ const Document = ({user}) => {
         {
             Header: 'Action',
             Footer: 'Action',
-            Cell: ({row}) => {
+            Cell: ({row}: any) => {
                 const data = row.original
                 return <DropdownActionDocument onDetail={()=>handleDetailDoc(data.i_id)} onDelete={() => handleDeleteData(data.i_id)} />
             }
@@ -170,7 +174,7 @@ const Document = ({user}) => {
     )
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
     return {
         user: state.user
     }

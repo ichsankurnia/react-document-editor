@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { connect } from "react-redux"
 
 import { activateUser, changePasswordUser, createNewUser, deleteUser, getAllUser, getAllUserGroup, updateUser } from "../../api/user-api"
@@ -13,16 +13,21 @@ import ModalFormUser from "../../component/modal/ModalFormUser"
 import SearchField from "../../component/textfield/SearchField"
 import { toast } from "react-toastify"
 
-const User = ({user}) => {
+
+type Props = {
+    user?: any
+}
+
+const User: React.FC<Props> = ({user}) => {
     const [loader, showLoader] = useState(false)
     const [modalUser, showModalUser] = useState(false)
     const [isUpdate, setIsUpdate] = useState(false)
     const [isChangePass, setIsChangePass] = useState(false)
-    const [modalChangePass, showModalChangePass] = useState()
+    const [modalChangePass, showModalChangePass] = useState(false)
     const [dataUser, setDataUser] = useState([])
     const [dataRole, setDataRole] = useState([])
     const [filterData, setFilterData] = useState([])
-    const [selectedUser, setSelectedUser] = useState(null)
+    const [selectedUser, setSelectedUser] = useState<any>(null)
 
     const navigate = useNavigate()
 
@@ -33,7 +38,7 @@ const User = ({user}) => {
             console.log('Fetch User Group :', res)
             if(res.data){
                 if(res.data.status === '00'){
-                    setDataRole(res.data.data.filter(data => data.b_active))
+                    setDataRole(res.data.data.filter((data: any) => data.b_active))
                 }else{
                     toast.error(`${res.config?.url} ${res.status} ${res.statusText}`)
                 }
@@ -75,19 +80,19 @@ const User = ({user}) => {
     }, [fetchUser])
 
 
-    const handleEditData =  (selectedData) => {
+    const handleEditData =  (selectedData: any) => {
         setSelectedUser(selectedData)
         setIsUpdate(true)
         showModalUser(true)
     }
 
-    const handleChangePassword = (selectedData) => {
+    const handleChangePassword = (selectedData: any) => {
         setSelectedUser(selectedData)
         setIsChangePass(true)
         showModalChangePass(true)
     }
 
-    const handleReceiveDataForm = async (data) => {
+    const handleReceiveDataForm = async (data: any) => {
         showLoader(true)
         
         let res = null
@@ -118,7 +123,7 @@ const User = ({user}) => {
         }
     }
 
-    const handleDeleteItem = async (data) => {
+    const handleDeleteItem = async (data: any) => {
         const res = await deleteUser(data.i_id)
 
         console.log("DELETE USER :", res)
@@ -139,7 +144,7 @@ const User = ({user}) => {
         }
     }
 
-    const handleActivateUser = async (data) => {
+    const handleActivateUser = async (data: any) => {
         const payload = {
             b_active: data.b_active? false: true
         }
@@ -177,7 +182,7 @@ const User = ({user}) => {
             Header: () => <span className='p-4'>Name</span>,
             Footer: 'Name',
             accessor: 'e_fullname',
-            Cell: ({ value }) =>  <div className='text-left pl-4'>{value}</div>,
+            Cell: ({ value }: any) =>  <div className='text-left pl-4'>{value}</div>,
         },
         {
             Header: 'Username',
@@ -198,7 +203,7 @@ const User = ({user}) => {
             Header: 'Status',
             Footer: 'Status',
             accessor: 'b_active',
-            Cell: ({value}) => (
+            Cell: ({value}: any) => (
                 value? 
                 <span className='bg-green-100 text-green-800 px-2 py-1 rounded-lg font-semibold'>Active</span>
                 :
@@ -213,7 +218,7 @@ const User = ({user}) => {
         {
             Header: 'Action',
             Footer: 'Action',
-            Cell: ({row}) => {
+            Cell: ({row}: any) => {
                 const data = row.original
                 if(user?.i_group === 1){
                     if(data.i_group !== 1){
@@ -240,12 +245,12 @@ const User = ({user}) => {
         }
     ]
 
-    const handleSearch = (event) => {
+    const handleSearch = (event: any) => {
         event.preventDefault()
 
         const newData = [...dataUser]
         if(event.target.value){
-            const filtered = newData.filter(item => {
+            const filtered = newData.filter((item: any) => {
                 return (
                     item.e_fullname.toLowerCase().includes(event.target.value.toLowerCase()) ||
                     item.n_username.toLowerCase().includes(event.target.value.toLowerCase()) || 
@@ -281,7 +286,7 @@ const User = ({user}) => {
                         <i className="ri-user-follow-fill"></i>
                     </div>
                     <div className='flex flex-col'>
-                        <h1 className='font-semibold text-3xl mb-1'>{dataUser?.filter(data => data.b_active).length}</h1>
+                        <h1 className='font-semibold text-3xl mb-1'>{dataUser?.filter((data: any) => data.b_active).length}</h1>
                         <p>Active User</p>
                     </div>
                 </div>
@@ -290,7 +295,7 @@ const User = ({user}) => {
                         <i className="ri-user-unfollow-fill"></i>
                     </div>
                     <div className='flex flex-col'>
-                        <h1 className='font-semibold text-3xl mb-1'>{dataUser?.filter(data => !data.b_active).length}</h1>
+                        <h1 className='font-semibold text-3xl mb-1'>{dataUser?.filter((data: any) => !data.b_active).length}</h1>
                         <p>Inactive User</p>
                     </div>
                 </div>
@@ -299,7 +304,7 @@ const User = ({user}) => {
                         <i className="ri-user-5-fill"></i>
                     </div>
                     <div className='flex flex-col'>
-                        <h1 className='font-semibold text-3xl mb-1'>{dataUser?.filter(data => data.i_group === 2).length}</h1>
+                        <h1 className='font-semibold text-3xl mb-1'>{dataUser?.filter((data: any) => data.i_group === 2).length}</h1>
                         <p>Employee</p>
                     </div>
                 </div>
@@ -331,7 +336,7 @@ const User = ({user}) => {
     )
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
     return {
         user: state.user,
         userRole: state.user_role_list

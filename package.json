@@ -1,41 +1,43 @@
 {
-  "name": "react-document-editor",
-  "homepage": "http://100.104.216.52/mou",
-  "version": "0.1.0",
+  "name": "mou-editor-contrib",
+  "homepage": "https://mou.goes2nobel.com",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
-    "@craco/craco": "^6.4.2",
     "@hookform/error-message": "^2.0.0",
-    "@syncfusion/ej2-base": "^19.4.42",
-    "@syncfusion/ej2-react-documenteditor": "^19.4.42",
-    "@syncfusion/ej2-react-pdfviewer": "^19.4.42",
-    "@testing-library/jest-dom": "^5.15.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
-    "axios": "^0.24.0",
+    "@syncfusion/ej2-base": "^19.4.52",
+    "@syncfusion/ej2-react-documenteditor": "^19.4.55",
+    "@syncfusion/ej2-react-pdfviewer": "^19.4.55",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.4",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.4.1",
+    "@types/node": "^16.11.26",
+    "@types/react": "^17.0.40",
+    "@types/react-dom": "^17.0.13",
+    "axios": "^0.26.1",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^17.0.2",
-    "react-dropzone": "^11.4.2",
-    "react-hook-form": "^7.20.4",
+    "react-dropzone": "^12.0.4",
+    "react-hook-form": "^7.27.1",
     "react-lazy-load-image-component": "^1.5.1",
-    "react-otp-input": "^2.4.0",
     "react-redux": "^7.2.6",
-    "react-router-dom": "^6.0.2",
-    "react-scripts": "4.0.3",
-    "react-scroll": "^1.8.4",
+    "react-router-dom": "^6.2.2",
+    "react-scripts": "5.0.0",
     "react-table": "^7.7.0",
-    "react-toastify": "^8.1.0",
+    "react-toastify": "^8.2.0",
     "redux": "^4.1.2",
+    "typescript": "^4.6.2",
     "uuid": "^8.3.2",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "set PORT=1111 && craco start",
-    "build": "craco build",
-    "test": "craco test",
+    "start": "set PORT=1111 && react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -44,19 +46,21 @@
       "react-app/jest"
     ]
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not op_mini all"
-  ],
-  "devDependencies": {
-    "autoprefixer": "^9.8.8",
-    "postcss": "^7.0.39",
-    "react-error-overlay": "6.0.9",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
-  "resolutions": {
-    "//": "See https://github.com/facebook/create-react-app/issues/11773",
-    "react-error-overlay": "6.0.9"
+  "devDependencies": {
+    "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.8",
+    "tailwindcss": "^3.0.23"
   }
 }
