@@ -1,7 +1,8 @@
 import axios from "axios";
 
 // export const baseURL = "http://localhost:2299"                          // Local
-export const baseURL = 'http://100.104.216.52:9000/api/v1'
+// export const baseURL = 'http://100.104.216.52:9000/api/v1'
+export const baseURL = 'https://apimou.goes2nobel.com/api/v1'
 
 const api = axios.create({
     baseURL: baseURL,
